@@ -1,5 +1,9 @@
 import React from "react";
 
-export const CountryDetails = () => {
-  return <h1>CountryDetails View</h1>;
+export const CountryDetails = ({
+  match: {
+    params: { countryCode },
+  },
+}) => {
+  return <h1>CountryDetails {countryCode}</h1>;
 };
