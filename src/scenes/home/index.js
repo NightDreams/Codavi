@@ -1,5 +1,10 @@
 import React from "react";
-
+import { Link } from "react-router-dom";
+import { BedCard } from '../../Components/Bed-card';
 export const Home = () => {
-  return <h1>Home View</h1>;
+	return (
+	<React.Fragment>
+		<BedCard/>
+	</React.Fragment>
+	);
 };
