@@ -8,7 +8,7 @@ import ReactCountryFlag from "react-country-flag";
 // Mock
 import { countryAmerica } from "../../api";
 
-export const Menu = () => {
+export const Menu = ({ children }) => {
   const [activeMenu, setActiveMenu] = useState("main");
   const [menuHeight, setMenuHeight] = useState(null);
   const dropdownRef = useRef(null);
@@ -34,6 +34,25 @@ export const Menu = () => {
     );
   };
 
+  const addRecent = (key, name, code) => {
+    const recentCountry = JSON.parse(localStorage.getItem("recent")) || [];
+
+    // Validación para no agregar un pais repetido a recientes
+    const keysArray = [];
+    recentCountry.map((c) => keysArray.push(c.key));
+    if (keysArray.includes(key)) {
+      return false;
+    }
+
+    // Eliminar el ultimo item y agregar uno nuevo con un max de 3 items
+    recentCountry.length > 2 && recentCountry.pop();
+    const countryData = { key, name, code };
+    localStorage.setItem(
+      "recent",
+      JSON.stringify([countryData, ...recentCountry])
+    );
+  };
+
   return (
     <div className="dropdown" style={{ height: menuHeight }} ref={dropdownRef}>
       <CSSTransition
@@ -44,8 +63,9 @@ export const Menu = () => {
         onEnter={calcHeight}
       >
         <div className="menu">
-          <DropdownItem goToMenu="africa">Africa</DropdownItem>
-          <DropdownItem goToMenu="animals">America</DropdownItem>
+          {children}
+          <DropdownItem goToMenu="america">America</DropdownItem>
+          <DropdownItem goToMenu="animals">Africa</DropdownItem>
           <DropdownItem goToMenu="animals">Asia</DropdownItem>
           <DropdownItem goToMenu="animals">Europa</DropdownItem>
           <DropdownItem goToMenu="animals">Oceania</DropdownItem>
@@ -53,7 +73,7 @@ export const Menu = () => {
       </CSSTransition>
 
       <CSSTransition
-        in={activeMenu === "africa"}
+        in={activeMenu === "america"}
         timeout={500}
         classNames="menu-secondary"
         unmountOnExit
@@ -61,10 +81,14 @@ export const Menu = () => {
       >
         <div className="menu">
           <DropdownItem goToMenu="main" leftIcon={<ArrowLeftIcon />}>
-            <p>Continentes</p>
+            <p style={{ fontWeight: "600" }}>Continentes</p>
           </DropdownItem>
           {countryAmerica.map(({ key, name, code }) => (
-            <Link key={key} to={`/country/${code}`}>
+            <Link
+              key={key}
+              to={`/country/${code}`}
+              onClick={() => addRecent(key, name, code)}
+            >
               <DropdownItem>
                 {" "}
                 <ReactCountryFlag
@@ -88,7 +112,7 @@ export const Menu = () => {
       >
         <div className="menu">
           <DropdownItem goToMenu="main" leftIcon={<ArrowLeftIcon />}>
-            <h3>Continentes</h3>
+            <p style={{ fontWeight: "600" }}>Continentes</p>
           </DropdownItem>
           <DropdownItem>Kangaroo</DropdownItem>
           <DropdownItem>Frog</DropdownItem>

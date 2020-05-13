@@ -1,17 +1,10 @@
+/* eslint-disable react/jsx-fragments */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import "../../index.css";
-import { ReactComponent as ArrowDownIcon } from "../../icons/arrow-down.svg";
-import React from "react";
-import { Menu } from "./Menu";
+import React, { Fragment } from "react";
 
-import { Item } from "./Item";
-
-const Dropdown = () => {
-  return (
-    <Item icon={<ArrowDownIcon />}>
-      <Menu />
-    </Item>
-  );
+const Dropdown = ({ children }) => {
+  return <Fragment>{children}</Fragment>;
 };
 
 export default Dropdown;

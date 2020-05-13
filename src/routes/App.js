@@ -3,6 +3,7 @@ import React, { Fragment } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { GlobalStyles } from "../styles";
 import { Home } from "../scenes/home";
+import Header from "../components/Header";
 import { CountryDetails } from "../scenes/country";
 import { Saved } from "../scenes/saved";
 import { NotFound } from "../scenes/NotFound";
@@ -10,7 +11,9 @@ import { NotFound } from "../scenes/NotFound";
 const App = () => (
   <BrowserRouter>
     <GlobalStyles />
-    <Fragment>{/* header (nav) Yayo */}</Fragment>
+    <Fragment>
+      <Header />
+    </Fragment>
     <Fragment>
       <Switch>
         <Route exact path="/" component={Home} />

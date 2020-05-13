@@ -26,7 +26,6 @@ a {
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
 }
 
 /* Icon Button */
@@ -51,9 +50,9 @@ a {
 
 .dropdown {
   position: absolute;
-  top: 43px;
+  top: 62px;
   width: 250px;
-  transform: translateX(-22%);
+  transform: translateX(138%);
   background-color: #fff;
   border-radius: var(--border-radius);
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
@@ -73,6 +72,8 @@ a {
   border-radius: var(--border-radius);
   transition: background var(--speed);
   padding: 0.5rem 0;
+  font-size: 14.5px;
+  cursor: pointer;
 }
 .menu-item:hover {
   background-color: #f2f2f2;

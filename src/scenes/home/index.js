@@ -1,11 +1,10 @@
-import React from "react";
-import Dropdown from "../../components/Dropdown";
+/* eslint-disable react/jsx-fragments */
+import React, { Fragment } from "react";
 
 export const Home = () => {
   return (
-    <div>
-      <Dropdown />
+    <Fragment>
       <h1>Home View</h1>
-    </div>
+    </Fragment>
   );
 };
