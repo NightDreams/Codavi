@@ -25,6 +25,13 @@ export const GlobalStyles = createGlobalStyle`
     }
 `;
 
+export const Container = styled.div`
+  padding: 30px 100px;
+  @media screen and (max-width: 576px) {
+    padding: 20px 30px;
+  }
+`;
+
 export const Button = styled.button`
   font-family: "Poppins", serif;
   font-weight: 500;
