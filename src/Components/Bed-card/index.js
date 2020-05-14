@@ -1,9 +1,10 @@
 import React from "react";
-import { Div, Rows, Name, Data, Total, Flag, Menu, General, Icono,Pais, Filtros} from "./styles";
+import { Card, Grid, Rows, Name, Data, Total, Flag, Menu, General, Icono,Pais, Filtros} from "./styles";
 import More from "../../icons/more-vertical.svg";
 export const BedCard = () => {
   return (
-    <Div>
+    <Grid>
+    <Card>
       <Menu>
         <Pais>
           <Flag></Flag>
@@ -19,19 +20,21 @@ export const BedCard = () => {
       <Data>
         <Rows>
           <Filtros>Tipo de cama</Filtros>
-          <p>Acute</p>
-          <p>Icu</p>
-          <p>Otras</p>
-          <p>Psychiatric</p>
+          <li>Acute</li>
+          <li>Icu</li>
+          <li>Otras</li>
+          <li>Psychiatric</li>
         </Rows>
         <Rows>
           <Filtros>Tipo de cama</Filtros>
-          <p>6000</p>
-          <p>500</p>
-          <p>909</p>
-          <p>674</p>
+          <li>6000</li>
+          <li>500</li>
+          <li>909</li>
+          <li>674</li>
         </Rows>
       </Data>
-    </Div>
+    </Card>
+    </Grid>
+
   );
 };
