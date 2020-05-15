@@ -44,7 +44,7 @@ const ItemsNav = styled.div`
 `;
 
 const ButtonMenu = styled.button`
-  position: absolute;
+  position: fixed;
   display: flex;
   right: 24px;
   bottom: 26px;
@@ -105,9 +105,6 @@ const Header = ({ location }) => {
           </ItemsNav>
         )}
       </Navegation>
-      <div>
-        <p>nice one</p>
-      </div>
     </Fragment>
   );
 };

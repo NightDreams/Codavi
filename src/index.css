@@ -1,5 +1,4 @@
 :root {
-  --bg: red;
   --bg-accent: #484a4d;
   --text-color: #1d1d1d;
   --nav-size: 60px;
@@ -18,8 +17,6 @@ a {
   color: var(--text-color);
   text-decoration: none;
 }
-
-/* Top Navigation Bar */
 
 /* <li> */
 .nav-item {
