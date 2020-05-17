@@ -2,11 +2,13 @@ import styled from "styled-components";
 export const Card = styled.div`
   display: grid;
   box-sizing: border-box;
-  border: solid 1px;
-  border-color: #bfbfbf;
+  border: none;
   border-radius: 10px;
   padding: 20px 30px;
   grid-gap: 6px 0;
+  background: #fff;
+  box-shadow: rgba(2, 8, 20, 0.1) 0px 0.175em 0.5em,
+    rgba(2, 8, 20, 0.08) 0px 0.085em;
 `;
 export const Grid = styled.div`
   display: grid;
