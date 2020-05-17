@@ -16,7 +16,7 @@ import {
   Filtros,
   Separation,
 } from "./styles";
-import { ReactComponent as MoreIcon } from "../../icons/more-vertical.svg";
+import { ReactComponent as SavedIcon } from "../../icons/saved.svg";
 import ReactCountryFlag from "react-country-flag";
 import { useCountryFlag } from "../../utils/hooks/useCountryFlag";
 
@@ -43,7 +43,7 @@ export const BedCard = ({ code, bedType }) => {
             </General>
           </Pais>
           <Icon>
-            <MoreIcon />
+            <SavedIcon />
           </Icon>
         </Menu>
         <Separation />

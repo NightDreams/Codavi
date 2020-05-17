@@ -25,7 +25,7 @@ export const Name = styled.p`
   grid-template-columns: repeat(3, 1fr);
   font-family: "Poppins", sans-serif;
   justify-self: center;
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 500;
 `;
 
@@ -45,6 +45,10 @@ export const Icon = styled.span`
   display: flex;
   cursor: pointer;
   color: #898989;
+  & svg {
+    width: 20px;
+    height: 20px;
+  }
 `;
 export const Menu = styled.div`
   display: grid;
