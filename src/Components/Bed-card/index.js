@@ -30,7 +30,6 @@ const CountryFlag = styled(ReactCountryFlag)`
 
 export const BedCard = ({ code, bedType }) => {
   const countryName = useCountryFlag(code);
-
   return (
     <Grid>
       <Card>

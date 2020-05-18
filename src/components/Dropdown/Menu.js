@@ -1,26 +1,36 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { CSSTransition } from "react-transition-group";
 import { ReactComponent as ArrowLeftIcon } from "../../icons/arrow-left.svg";
 import ReactCountryFlag from "react-country-flag";
-
-// Mock
-import { countryAmerica } from "../../api";
+import { getCountriesAmerica } from "../../api/getCountriesAmerica";
+import { getCountriesAfrica } from "../../api/getCountriesAfrica";
+import { getCountriesAsia } from "../../api/getCountriesAsia";
+import { getCountriesEurope } from "../../api/getCountriesEurope";
 
 export const Menu = ({ children }) => {
   const [activeMenu, setActiveMenu] = useState("main");
-  const [menuHeight, setMenuHeight] = useState(null);
-  const dropdownRef = useRef(null);
 
-  useEffect(() => {
-    setMenuHeight(dropdownRef.current?.firstChild.offsetHeight);
-  }, []);
+  const [countriesAmericaList, setCountriesAmerica] = useState([]);
+  const renderCountriesAmerica = () => {
+    getCountriesAmerica().then((data) => setCountriesAmerica(data));
+  };
 
-  function calcHeight(el) {
-    const height = el.offsetHeight;
-    setMenuHeight(height);
-  }
+  const [countriesAfricaList, setCountriesAfrica] = useState([]);
+  const renderCountriesAfrica = () => {
+    getCountriesAfrica().then((data) => setCountriesAfrica(data));
+  };
+
+  const [countriesAsiaList, setCountriesAsia] = useState([]);
+  const renderCountriesAsia = () => {
+    getCountriesAsia().then((data) => setCountriesAsia(data));
+  };
+
+  const [countriesEuropeList, setCountriesEurope] = useState([]);
+  const renderCountriesEurope = () => {
+    getCountriesEurope().then((data) => setCountriesEurope(data));
+  };
 
   const DropdownItem = ({ goToMenu, leftIcon, children }) => {
     return (
@@ -54,21 +64,28 @@ export const Menu = ({ children }) => {
   };
 
   return (
-    <div className="dropdown" style={{ height: menuHeight }} ref={dropdownRef}>
+    <div className="dropdown">
       <CSSTransition
         in={activeMenu === "main"}
         timeout={500}
         classNames="menu-primary"
         unmountOnExit
-        onEnter={calcHeight}
       >
         <div className="menu">
           {children}
-          <DropdownItem goToMenu="america">America</DropdownItem>
-          <DropdownItem goToMenu="animals">Africa</DropdownItem>
-          <DropdownItem goToMenu="animals">Asia</DropdownItem>
-          <DropdownItem goToMenu="animals">Europa</DropdownItem>
-          <DropdownItem goToMenu="animals">Oceania</DropdownItem>
+          <span onClick={renderCountriesAmerica}>
+            <DropdownItem goToMenu="america">America</DropdownItem>
+          </span>
+          <span onClick={renderCountriesAfrica}>
+            <DropdownItem goToMenu="africa">Africa</DropdownItem>
+          </span>
+          <span onClick={renderCountriesAsia}>
+            <DropdownItem goToMenu="asia">Asia</DropdownItem>
+          </span>
+          <span onClick={renderCountriesEurope}>
+            <DropdownItem goToMenu="europa">Europa</DropdownItem>
+          </span>
+          {/* <DropdownItem goToMenu="animals">Oceania</DropdownItem> */}
         </div>
       </CSSTransition>
 
@@ -77,26 +94,95 @@ export const Menu = ({ children }) => {
         timeout={500}
         classNames="menu-secondary"
         unmountOnExit
-        onEnter={calcHeight}
       >
         <div className="menu">
           <DropdownItem goToMenu="main" leftIcon={<ArrowLeftIcon />}>
             <p style={{ fontWeight: "600" }}>Continentes</p>
           </DropdownItem>
-          {countryAmerica.map(({ key, name, code }) => (
+          {countriesAmericaList.map(
+            ({ alpha2Code, nativeName, numericCode }) => (
+              <Link
+                key={numericCode}
+                to={`/country/${alpha2Code.toLowerCase()}`}
+                onClick={() =>
+                  addRecent(numericCode, nativeName, alpha2Code.toLowerCase())
+                }
+              >
+                <DropdownItem>
+                  {" "}
+                  <ReactCountryFlag
+                    countryCode={alpha2Code}
+                    svg
+                    style={{ marginRight: "7px", borderRadius: "20px" }}
+                  />{" "}
+                  {nativeName}
+                </DropdownItem>
+              </Link>
+            )
+          )}
+        </div>
+      </CSSTransition>
+
+      <CSSTransition
+        in={activeMenu === "africa"}
+        timeout={500}
+        classNames="menu-secondary"
+        unmountOnExit
+      >
+        <div className="menu">
+          <DropdownItem goToMenu="main" leftIcon={<ArrowLeftIcon />}>
+            <p style={{ fontWeight: "600" }}>Continentes</p>
+          </DropdownItem>
+          {countriesAfricaList.map(
+            ({ alpha2Code, nativeName, numericCode }) => (
+              <Link
+                key={numericCode}
+                to={`/country/${alpha2Code.toLowerCase()}`}
+                onClick={() =>
+                  addRecent(numericCode, nativeName, alpha2Code.toLowerCase())
+                }
+              >
+                <DropdownItem>
+                  {" "}
+                  <ReactCountryFlag
+                    countryCode={alpha2Code}
+                    svg
+                    style={{ marginRight: "7px", borderRadius: "20px" }}
+                  />{" "}
+                  {nativeName}
+                </DropdownItem>
+              </Link>
+            )
+          )}
+        </div>
+      </CSSTransition>
+
+      <CSSTransition
+        in={activeMenu === "asia"}
+        timeout={500}
+        classNames="menu-secondary"
+        unmountOnExit
+      >
+        <div className="menu">
+          <DropdownItem goToMenu="main" leftIcon={<ArrowLeftIcon />}>
+            <p style={{ fontWeight: "600" }}>Continentes</p>
+          </DropdownItem>
+          {countriesAsiaList.map(({ alpha2Code, nativeName, numericCode }) => (
             <Link
-              key={key}
-              to={`/country/${code}`}
-              onClick={() => addRecent(key, name, code)}
+              key={numericCode}
+              to={`/country/${alpha2Code.toLowerCase()}`}
+              onClick={() =>
+                addRecent(numericCode, nativeName, alpha2Code.toLowerCase())
+              }
             >
               <DropdownItem>
                 {" "}
                 <ReactCountryFlag
-                  countryCode={code}
+                  countryCode={alpha2Code}
                   svg
                   style={{ marginRight: "7px", borderRadius: "20px" }}
                 />{" "}
-                {name}
+                {nativeName}
               </DropdownItem>
             </Link>
           ))}
@@ -104,20 +190,36 @@ export const Menu = ({ children }) => {
       </CSSTransition>
 
       <CSSTransition
-        in={activeMenu === "animals"}
+        in={activeMenu === "europa"}
         timeout={500}
         classNames="menu-secondary"
         unmountOnExit
-        onEnter={calcHeight}
       >
         <div className="menu">
           <DropdownItem goToMenu="main" leftIcon={<ArrowLeftIcon />}>
             <p style={{ fontWeight: "600" }}>Continentes</p>
           </DropdownItem>
-          <DropdownItem>Kangaroo</DropdownItem>
-          <DropdownItem>Frog</DropdownItem>
-          <DropdownItem>Horse?</DropdownItem>
-          <DropdownItem>Hedgehog</DropdownItem>
+          {countriesEuropeList.map(
+            ({ alpha2Code, nativeName, numericCode }) => (
+              <Link
+                key={numericCode}
+                to={`/country/${alpha2Code.toLowerCase()}`}
+                onClick={() =>
+                  addRecent(numericCode, nativeName, alpha2Code.toLowerCase())
+                }
+              >
+                <DropdownItem>
+                  {" "}
+                  <ReactCountryFlag
+                    countryCode={alpha2Code}
+                    svg
+                    style={{ marginRight: "7px", borderRadius: "20px" }}
+                  />{" "}
+                  {nativeName}
+                </DropdownItem>
+              </Link>
+            )
+          )}
         </div>
       </CSSTransition>
     </div>

@@ -54,11 +54,12 @@ a {
   top: 62px;
   right: 60px;
   width: 250px;
+  height: 310px !important;
   background-color: #fff;
   border-radius: var(--border-radius);
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
   padding: 10px 5px;
-  overflow: hidden;
+  overflow: scroll;
   transition: height var(--speed) ease;
 }
 
