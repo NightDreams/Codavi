@@ -29,10 +29,17 @@ const CountryFlag = styled(ReactCountryFlag)`
 `;
 
 export const BedCard = ({ code, bedType }) => {
+  const getSaveCards = JSON.parse(localStorage.getItem("saveCard")) || [];
   const countryName = useCountryFlag(code);
-
+  const saveBedCard = () => {
+    localStorage.setItem(
+      "saveCard",
+      JSON.stringify([...getSaveCards, { code, bedType }])
+    );
+  };
   return (
     <Grid>
+      {console.log(getSaveCards)}
       <Card>
         <Menu>
           <Pais>
@@ -43,7 +50,7 @@ export const BedCard = ({ code, bedType }) => {
             </General>
           </Pais>
           <Icon>
-            <SavedIcon />
+            <SavedIcon onClick={saveBedCard} />
           </Icon>
         </Menu>
         <Separation />
