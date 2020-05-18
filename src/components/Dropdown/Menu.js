@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import styled from "styled-components";
 import { CSSTransition } from "react-transition-group";
 import { ReactComponent as ArrowLeftIcon } from "../../icons/arrow-left.svg";
 import ReactCountryFlag from "react-country-flag";
@@ -62,6 +63,14 @@ export const Menu = ({ children }) => {
       JSON.stringify([countryData, ...recentCountry])
     );
   };
+  const Title = styled.h4`
+    text-align: left;
+    font-weight: 500;
+    padding-left: 21px;
+    color: #50c7d2;
+    margin: 0 0 4px 0;
+    font-size: 15px;
+  `;
 
   return (
     <div className="dropdown">
@@ -73,6 +82,7 @@ export const Menu = ({ children }) => {
       >
         <div className="menu">
           {children}
+          <Title>Continentes</Title>
           <span onClick={renderCountriesAmerica}>
             <DropdownItem goToMenu="america">America</DropdownItem>
           </span>

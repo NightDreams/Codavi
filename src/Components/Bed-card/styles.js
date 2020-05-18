@@ -1,6 +1,5 @@
 import styled from "styled-components";
 export const Card = styled.div`
-  display: grid;
   box-sizing: border-box;
   border: none;
   border-radius: 10px;

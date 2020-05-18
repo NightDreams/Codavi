@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-key */
 /* eslint-disable react/jsx-fragments */
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import {
   Card,
@@ -17,6 +18,7 @@ import {
   Separation,
 } from "./styles";
 import { ReactComponent as SavedIcon } from "../../icons/saved.svg";
+import { ReactComponent as TimesIcon } from "../../icons/times.svg";
 import ReactCountryFlag from "react-country-flag";
 import { useCountryFlag } from "../../utils/hooks/useCountryFlag";
 
@@ -28,40 +30,58 @@ const CountryFlag = styled(ReactCountryFlag)`
   margin-top: 7px;
 `;
 
-export const BedCard = ({ code, bedType }) => {
+export const BedCard = ({ code, saved, typebed, removeItem }) => {
+  // const [cardsToKeep, setCardsToKeep] = useState([])
+
+  const getSaveCards = JSON.parse(localStorage.getItem("saveCard")) || [];
   const countryName = useCountryFlag(code);
+  const saveBedCard = () => {
+    localStorage.setItem(
+      "saveCard",
+      JSON.stringify([...getSaveCards, { code, typebed }])
+    );
+  };
+
   return (
     <Grid>
       <Card>
         <Menu>
           <Pais>
-            <CountryFlag countryCode={code} svg />
+            <Link to={`/country/${code}`}>
+              <CountryFlag countryCode={code} svg />
+            </Link>
             <General>
-              <Name>{countryName}</Name>
+              <Link to={`/country/${code}`}>
+                <Name>{countryName}</Name>
+              </Link>
               <Total>110 camas</Total>
             </General>
           </Pais>
           <Icon>
-            <SavedIcon />
+            {saved ? (
+              <TimesIcon onClick={() => removeItem(code)} />
+            ) : (
+              <SavedIcon onClick={saveBedCard} />
+            )}
           </Icon>
         </Menu>
+        {/* <div> */}
         <Separation />
+        {/* </div> */}
         <Data>
           <Rows>
             <Filtros>Tipo de cama</Filtros>
-            <li>Acute</li>
-            <li>Icu</li>
-            <li>Psychiatric</li>
-            <li>Otras</li>
+            {typebed.map((b) => (
+              <Fragment>
+                <li>{b.type}</li>
+              </Fragment>
+            ))}
           </Rows>
           <Rows>
             <Filtros>Numero</Filtros>
-            {bedType.map((b) => (
+            {typebed.map((b) => (
               <Fragment>
-                <li>{b.acute}</li>
-                <li>{b.icu}</li>
-                <li>{b.psychiatric}</li>
-                <li>{b.other}</li>
+                <li>{b.population}</li>
               </Fragment>
             ))}
           </Rows>

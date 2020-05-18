@@ -74,7 +74,7 @@ const Header = ({ location }) => {
           </Link>
         </div>
         {isMobileAndIpad ? (
-          <ButtonMenu onClick={() => console.log("Show Options")}>
+          <ButtonMenu>
             <MenuIcon />
           </ButtonMenu>
         ) : (
