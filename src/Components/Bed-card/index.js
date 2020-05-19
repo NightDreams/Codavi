@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-key */
 /* eslint-disable react/jsx-fragments */
-import React, { Fragment, useState } from "react";
+import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import {
@@ -31,8 +31,6 @@ const CountryFlag = styled(ReactCountryFlag)`
 `;
 
 export const BedCard = ({ code, saved, typebed, removeItem }) => {
-  // const [cardsToKeep, setCardsToKeep] = useState([])
-
   const getSaveCards = JSON.parse(localStorage.getItem("saveCard")) || [];
   const countryName = useCountryFlag(code);
   const saveBedCard = () => {
@@ -65,9 +63,7 @@ export const BedCard = ({ code, saved, typebed, removeItem }) => {
             )}
           </Icon>
         </Menu>
-        {/* <div> */}
         <Separation />
-        {/* </div> */}
         <Data>
           <Rows>
             <Filtros>Tipo de cama</Filtros>

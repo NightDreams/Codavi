@@ -10,7 +10,7 @@ import logoCodavi from "../../assets/logo_codavi.svg";
 
 // Dropdown
 import Dropdown from "../../components/Dropdown";
-import { Menu } from "../../components/Dropdown/Menu";
+import Menu from "../../components/Dropdown/Menu";
 import { Recent } from "../../components/Recent";
 
 // Media Query

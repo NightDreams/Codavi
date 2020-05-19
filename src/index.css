@@ -61,6 +61,7 @@ a {
   padding: 10px 5px;
   overflow: scroll;
   transition: height var(--speed) ease;
+  z-index: 1;
 }
 
 .menu {

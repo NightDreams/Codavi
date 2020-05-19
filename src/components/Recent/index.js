@@ -3,8 +3,6 @@ import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { DropdownItem } from "../Dropdown/DropdownItem";
-import ReactCountryFlag from "react-country-flag";
-import { ReactComponent as TimesIcon } from "../../icons/times.svg";
 
 const Title = styled.h4`
   text-align: left;
@@ -30,15 +28,7 @@ export const Recent = () => {
           <Title>Recientes</Title>
           {recentCountry.map(({ key, name, code }) => (
             <Link key={key} to={`/country/${code}`}>
-              <DropdownItem>
-                {" "}
-                <ReactCountryFlag
-                  countryCode={code}
-                  svg
-                  style={{ marginRight: "7px", borderRadius: "20px" }}
-                />{" "}
-                {name}
-              </DropdownItem>
+              <DropdownItem>{name}</DropdownItem>
             </Link>
           ))}
           <Separation />
