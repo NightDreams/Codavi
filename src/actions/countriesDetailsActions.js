@@ -11,7 +11,7 @@ export const getMostPopulation = () => (dispatch) => {
         code
         bedsTotal
         bedsAverage
-        populationAverage
+        estimatedBedsTotal
         typebed{
           type
           population
@@ -35,4 +35,42 @@ export const getMostPopulation = () => (dispatch) => {
         payload: error.message,
       });
     });
+};
+
+export const getCountryDetails = (countryCode) => (dispatch) => {
+  //   dispatch({
+  //     type: "loading",
+  //   });
+  console.log("code" + countryCode);
+  const query = `query get($code: String!) {
+        getCountry(code: $code) {
+          _id
+          code
+          bedsTotal
+          typebed{
+            type
+            population
+          }
+          restrictions{
+            dateStart
+          }
+        }
+      }`;
+  countryCode &&
+    request("https://app-backend-graphql.herokuapp.com/", query, {
+      code: `${countryCode}`,
+    })
+      .then((data) => {
+        dispatch({
+          type: "get_country_details",
+          payload: data.getCountry,
+        });
+        console.log(data.getCountry);
+      })
+      .catch((error) => {
+        dispatch({
+          type: "error",
+          payload: error.message,
+        });
+      });
 };

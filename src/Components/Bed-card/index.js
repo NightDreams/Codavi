@@ -30,7 +30,13 @@ const CountryFlag = styled(ReactCountryFlag)`
   margin-top: 7px;
 `;
 
-export const BedCard = ({ code, saved, typebed, removeItem }) => {
+export const BedCard = ({
+  code,
+  saved,
+  typebed,
+  removeItem,
+  estimatedBedsTotal,
+}) => {
   const getSaveCards = JSON.parse(localStorage.getItem("saveCard")) || [];
   const countryName = useCountryFlag(code);
   const saveBedCard = () => {
@@ -52,7 +58,10 @@ export const BedCard = ({ code, saved, typebed, removeItem }) => {
               <Link to={`/country/${code}`}>
                 <Name>{countryName}</Name>
               </Link>
-              <Total>110 camas</Total>
+              <Total>
+                {new Intl.NumberFormat().format(Math.round(estimatedBedsTotal))}{" "}
+                camas
+              </Total>
             </General>
           </Pais>
           <Icon>
@@ -63,7 +72,7 @@ export const BedCard = ({ code, saved, typebed, removeItem }) => {
             )}
           </Icon>
         </Menu>
-        <Separation />
+        {/* <Separation />
         <Data>
           <Rows>
             <Filtros>Tipo de cama</Filtros>
@@ -81,7 +90,7 @@ export const BedCard = ({ code, saved, typebed, removeItem }) => {
               </Fragment>
             ))}
           </Rows>
-        </Data>
+        </Data> */}
       </Card>
     </Grid>
   );

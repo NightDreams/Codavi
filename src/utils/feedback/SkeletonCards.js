@@ -10,7 +10,7 @@ const Skeleton = styled.div`
   div {
     background: #80808017;
     width: 100%;
-    height: 200px;
+    height: 120px;
     border-radius: 10px;
     animation: loading 0.9s infinite;
   }

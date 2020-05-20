@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { ReactComponent as More } from "../../icons/more-horizontal.svg";
 import { useCountryFlag } from "../../utils/hooks/useCountryFlag";
 import { request } from "graphql-request";
+import { Rows, Data, Filtros } from "../../components/Bed-card/styles";
 
 const TitleCountry = styled.p`
   margin: 0;
@@ -58,6 +59,13 @@ export const CountryDetails = ({
       _id
       code
       bedsTotal
+      typebed{
+        type
+        population
+      }
+      restrictions{
+        dateStart
+      }
     }
   }`;
 
@@ -73,20 +81,38 @@ export const CountryDetails = ({
         <p>Loading...</p>
       ) : (
         <Fragment>
-          <IconMore>
+          {console.log(dataCountry)}
+          {/* <IconMore>
             <More />
-          </IconMore>
-          <TitleCountry>
-            {countryName} {dataCountry.bedsTotal}
-          </TitleCountry>
+          </IconMore> */}
+          <TitleCountry>{countryName}</TitleCountry>
           <AboutSection>Camas y precauciones</AboutSection>
           <Separation />
           <Div>
             <div>
               <h4>Camas disponibles</h4>
+              <Data>
+                <Rows>
+                  <Filtros>Tipo de cama</Filtros>
+                  {dataCountry.typebed.map((b) => (
+                    <li key={b.type}>{b.type}</li>
+                  ))}
+                </Rows>
+                <Rows>
+                  <Filtros>Numero</Filtros>
+                  {dataCountry.typebed.map((b) => (
+                    <li key={b.population}>{b.population}</li>
+                  ))}
+                </Rows>
+              </Data>
             </div>
             <div>
               <h4>Precauciones</h4>
+              <p>
+                {!dataCountry.restrictions.length
+                  ? "No hay restricciones displonibles para este país"
+                  : dataCountry.restrictions}
+              </p>
             </div>
           </Div>
         </Fragment>
