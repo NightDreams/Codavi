@@ -26,7 +26,7 @@ export const Name = styled.p`
   grid-template-columns: repeat(3, 1fr);
   font-family: "Poppins", sans-serif;
   justify-self: center;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
 `;
 
@@ -55,7 +55,6 @@ export const Menu = styled.div`
   display: grid;
   grid-template-columns: repeat(2, minmax(auto, 1fr));
   grid-template-rows: 1fr;
-  align-items: center;
 `;
 export const Pais = styled.div`
   display: grid;

@@ -1,5 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable prefer-const */
+/* eslint-disable no-extend-native */
 /* eslint-disable react/jsx-key */
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Card, Grid, Name, Total, Menu, General, Icon, Pais } from "./styles";
@@ -16,20 +19,64 @@ const CountryFlag = styled(ReactCountryFlag)`
   margin-top: 7px;
 `;
 
+const IconSaved = styled(SavedIcon)`
+  fill: #ccc !important;
+  stroke: #ccc;
+  cursor: pointer;
+`;
+const IconNotSaved = styled(SavedIcon)`
+  fill: none;
+  cursor: pointer;
+`;
+
 export const BedCard = ({
   code,
   saved,
-  typebed,
+  bedsTotal,
   removeItem,
   estimatedBedsTotal,
 }) => {
-  const getSaveCards = JSON.parse(localStorage.getItem("saveCard")) || [];
+  Array.prototype.diff = function (arr2) {
+    let ret = [];
+    this.sort();
+    arr2.sort();
+    for (let i = 0; i < this.length; i += 1) {
+      if (arr2.indexOf(this[i]) > -1) {
+        ret.push(this[i]);
+      }
+    }
+    return ret;
+  };
+
+  const [currentSaved, setSaved] = useState(false);
+
+  useEffect(() => {
+    const array1 = new Array(code);
+    const array2 = JSON.parse(localStorage.getItem("saveCard")).map(
+      (c) => c.code
+    );
+    const diffCode = array1.diff(array2);
+    if (diffCode[0] === code) {
+      setSaved(true);
+    } else {
+      setSaved(false);
+    }
+  });
+
   const countryName = useCountryFlag(code);
+
   const saveBedCard = () => {
+    const getSaveCards = JSON.parse(localStorage.getItem("saveCard")) || [];
+    const newCountry = {
+      code,
+      bedsTotal: new Intl.NumberFormat().format(Math.round(estimatedBedsTotal)),
+    };
+
     localStorage.setItem(
       "saveCard",
-      JSON.stringify([...getSaveCards, { code, typebed }])
+      JSON.stringify([newCountry, ...getSaveCards])
     );
+    setSaved(!currentSaved);
   };
 
   return (
@@ -44,17 +91,16 @@ export const BedCard = ({
               <Link to={`/country/${code}`}>
                 <Name>{countryName}</Name>
               </Link>
-              <Total>
-                {new Intl.NumberFormat().format(Math.round(estimatedBedsTotal))}{" "}
-                camas
-              </Total>
+              <Total>{bedsTotal} camas</Total>
             </General>
           </Pais>
           <Icon>
             {saved ? (
               <TimesIcon onClick={() => removeItem(code)} />
+            ) : currentSaved ? (
+              <IconSaved onClick={() => removeItem(code)} />
             ) : (
-              <SavedIcon onClick={saveBedCard} />
+              <IconNotSaved onClick={saveBedCard} />
             )}
           </Icon>
         </Menu>

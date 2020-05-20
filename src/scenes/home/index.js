@@ -1,6 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-unreachable */
 /* eslint-disable react/jsx-fragments */
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import * as countriesDetailsReducer from "../../actions/countriesDetailsActions";
@@ -44,8 +46,17 @@ const Home = ({
 }) => {
   useEffect(() => {
     !listCountriesMostPopulation.length && getMostPopulation();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const getSaveCards = JSON.parse(localStorage.getItem("saveCard")) || [];
+
+  const [savedCountries, setSaved] = useState(getSaveCards);
+
+  const removeItem = (_code) => {
+    const filterCountries = getSaveCards.filter((data) => data.code !== _code);
+    localStorage.setItem("saveCard", JSON.stringify(filterCountries));
+    setSaved(filterCountries);
+  };
 
   return (
     <Fragment>
@@ -63,13 +74,14 @@ const Home = ({
       <h2 style={{ fontWeight: "500", marginBottom: "35px", fontSize: "21px" }}>
         Países con mas camas
       </h2>
+      {/* {console.log(listCountriesMostPopulation.map((c) => c.code))} */}
       {error && <Fatal />}
       {loading ? (
         <SkeletonCards />
       ) : (
         <Div>
           {listCountriesMostPopulation.map((country) => (
-            <BedCard key={country._id} {...country} />
+            <BedCard key={country._id} {...country} removeItem={removeItem} />
           ))}
         </Div>
       )}
