@@ -1,22 +1,8 @@
 /* eslint-disable react/jsx-key */
-/* eslint-disable react/jsx-fragments */
-import React, { Fragment } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import {
-  Card,
-  Grid,
-  Rows,
-  Name,
-  Data,
-  Total,
-  Menu,
-  General,
-  Icon,
-  Pais,
-  Filtros,
-  Separation,
-} from "./styles";
+import { Card, Grid, Name, Total, Menu, General, Icon, Pais } from "./styles";
 import { ReactComponent as SavedIcon } from "../../icons/saved.svg";
 import { ReactComponent as TimesIcon } from "../../icons/times.svg";
 import ReactCountryFlag from "react-country-flag";
@@ -72,25 +58,6 @@ export const BedCard = ({
             )}
           </Icon>
         </Menu>
-        {/* <Separation />
-        <Data>
-          <Rows>
-            <Filtros>Tipo de cama</Filtros>
-            {typebed.map((b) => (
-              <Fragment>
-                <li>{b.type}</li>
-              </Fragment>
-            ))}
-          </Rows>
-          <Rows>
-            <Filtros>Numero</Filtros>
-            {typebed.map((b) => (
-              <Fragment>
-                <li>{b.population}</li>
-              </Fragment>
-            ))}
-          </Rows>
-        </Data> */}
       </Card>
     </Grid>
   );

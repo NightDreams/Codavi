@@ -2,10 +2,10 @@
 /* eslint-disable react/jsx-fragments */
 import React, { Fragment, useEffect, useState } from "react";
 import styled from "styled-components";
-import { ReactComponent as More } from "../../icons/more-horizontal.svg";
 import { useCountryFlag } from "../../utils/hooks/useCountryFlag";
 import { request } from "graphql-request";
 import { Rows, Data, Filtros } from "../../components/Bed-card/styles";
+import { SkeletonCountryDetails } from "../../utils/feedback/SkeletonCountryDetails";
 
 const TitleCountry = styled.p`
   margin: 0;
@@ -33,17 +33,6 @@ const Div = styled.div`
   grid-template-rows: 1fr;
   grid-column-gap: 0px;
   grid-row-gap: 0px;
-`;
-
-const IconMore = styled.span`
-  display: inline-flex;
-  padding: 7px;
-  border-radius: 29px;
-  margin-bottom: 7px;
-  cursor: pointer;
-  &:hover {
-    background: #50c7d214;
-  }
 `;
 
 export const CountryDetails = ({
@@ -78,13 +67,9 @@ export const CountryDetails = ({
   return (
     <Fragment>
       {Object.entries(dataCountry).length === 0 ? (
-        <p>Loading...</p>
+        <SkeletonCountryDetails />
       ) : (
         <Fragment>
-          {console.log(dataCountry)}
-          {/* <IconMore>
-            <More />
-          </IconMore> */}
           <TitleCountry>{countryName}</TitleCountry>
           <AboutSection>Camas y precauciones</AboutSection>
           <Separation />
