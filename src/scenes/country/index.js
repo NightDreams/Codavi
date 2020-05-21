@@ -6,6 +6,9 @@ import { useCountryFlag } from "../../utils/hooks/useCountryFlag";
 import { request } from "graphql-request";
 import { Rows, Data, Filtros } from "../../components/Bed-card/styles";
 import { SkeletonCountryDetails } from "../../utils/feedback/SkeletonCountryDetails";
+import { ReactComponent as TableIcon } from "../../icons/list.svg";
+import { ReactComponent as ChartIcon } from "../../icons/chart.svg";
+import Chart from "react-google-charts";
 
 const TitleCountry = styled.p`
   margin: 0;
@@ -31,8 +34,30 @@ const Div = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: 1fr;
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
+  grid-column-gap: 50px;
+`;
+
+const ViewOptions = styled.ul`
+  position: absolute;
+  z-index: 1;
+  right: 0;
+  top: 23px;
+  li {
+    display: inline-block;
+    cursor: pointer;
+    &:last-child {
+      margin-left: 5px;
+    }
+    svg {
+      width: 19px;
+    }
+  }
+`;
+
+const TitleView = styled.small`
+  position: relative;
+  top: -7px;
+  margin-right: 10px;
 `;
 
 export const CountryDetails = ({
@@ -42,6 +67,19 @@ export const CountryDetails = ({
 }) => {
   const countryName = useCountryFlag(countryCode);
   const [dataCountry, setData] = useState({});
+
+  const data = [
+    ["Task", "Hours per Day"],
+    ["Work", 11],
+    ["Eat", 2],
+    ["Commute", 2],
+    ["Watch TV", 2],
+    ["Sleep", 7], // CSS-style declaration
+  ];
+  const options = {
+    pieHole: 0.4,
+    is3D: false,
+  };
 
   const query = `query get($code: String!) {
     getCountry(code: $code) {
@@ -64,6 +102,11 @@ export const CountryDetails = ({
     }).then((data) => setData(data.getCountry));
   }, [countryCode]);
 
+  const [view, setView] = useState("table");
+  const changeView = (view) => {
+    setView(view);
+  };
+
   return (
     <Fragment>
       {Object.entries(dataCountry).length === 0 ? (
@@ -74,22 +117,55 @@ export const CountryDetails = ({
           <AboutSection>Camas y precauciones</AboutSection>
           <Separation />
           <Div>
-            <div>
+            <div style={{ position: "relative" }}>
               <h4>Camas disponibles</h4>
-              <Data>
-                <Rows>
-                  <Filtros>Tipo de cama</Filtros>
-                  {dataCountry.typebed.map((b) => (
-                    <li key={b.type}>{b.type}</li>
-                  ))}
-                </Rows>
-                <Rows>
-                  <Filtros>Numero</Filtros>
-                  {dataCountry.typebed.map((b) => (
-                    <li key={b.population}>{b.population}</li>
-                  ))}
-                </Rows>
-              </Data>
+              <ViewOptions>
+                <TitleView>Vista:</TitleView>
+                <li onClick={() => changeView("table")}>
+                  {" "}
+                  <TableIcon
+                    style={
+                      view === "table"
+                        ? { color: "#50c7d2" }
+                        : { color: "#ccc" }
+                    }
+                  />{" "}
+                </li>
+                <li onClick={() => changeView("chart")}>
+                  {" "}
+                  <ChartIcon
+                    style={
+                      view === "chart"
+                        ? { color: "#50c7d2" }
+                        : { color: "#ccc" }
+                    }
+                  />{" "}
+                </li>
+              </ViewOptions>
+              {view === "table" ? (
+                <Data>
+                  <Rows>
+                    <Filtros>Tipo de cama</Filtros>
+                    {dataCountry.typebed.map((b) => (
+                      <li key={b.type}>{b.type}</li>
+                    ))}
+                  </Rows>
+                  <Rows>
+                    <Filtros>Numero</Filtros>
+                    {dataCountry.typebed.map((b) => (
+                      <li key={b.population}>{b.population}</li>
+                    ))}
+                  </Rows>
+                </Data>
+              ) : (
+                <Chart
+                  chartType="PieChart"
+                  width="100%"
+                  height="300px"
+                  data={data}
+                  options={options}
+                />
+              )}
             </div>
             <div>
               <h4>Precauciones</h4>

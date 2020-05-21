@@ -15,7 +15,7 @@ export const Grid = styled.div`
 export const Rows = styled.ul`
   grid-gap: 30px 60px;
   font-family: "Poppins", sans-serif;
-  font-size: 13px;
+  font-size: 14.3px;
   font-weight: 500;
   li {
     margin-bottom: 10px;
@@ -68,13 +68,15 @@ export const Pais = styled.div`
 export const Filtros = styled.li`
   font-weight: 500;
   margin-bottom: 10px;
-  font-size: 13px;
+  font-size: 14.3px;
   color: #000 !important;
 `;
 export const Data = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-column-gap: 33px;
+  background: #fff;
+  padding: 20px 20px 20px 30px;
 `;
 
 export const Separation = styled.hr`

@@ -32,7 +32,7 @@ const IconNotSaved = styled(SavedIcon)`
 export const BedCard = ({
   code,
   saved,
-  bedsTotal,
+  _bedsTotal,
   removeItem,
   estimatedBedsTotal,
 }) => {
@@ -52,10 +52,9 @@ export const BedCard = ({
 
   useEffect(() => {
     const array1 = new Array(code);
-    const array2 = JSON.parse(localStorage.getItem("saveCard")).map(
-      (c) => c.code
-    );
-    const diffCode = array1.diff(array2);
+    const getSavedCard = JSON.parse(localStorage.getItem("saveCard"));
+    const array2 = getSavedCard && getSavedCard.map((c) => c.code);
+    const diffCode = array1.diff(array2 || []);
     if (diffCode[0] === code) {
       setSaved(true);
     } else {
@@ -69,7 +68,7 @@ export const BedCard = ({
     const getSaveCards = JSON.parse(localStorage.getItem("saveCard")) || [];
     const newCountry = {
       code,
-      bedsTotal: new Intl.NumberFormat().format(Math.round(estimatedBedsTotal)),
+      _bedsTotal: estimatedBedsTotal,
     };
 
     localStorage.setItem(
@@ -91,7 +90,14 @@ export const BedCard = ({
               <Link to={`/country/${code}`}>
                 <Name>{countryName}</Name>
               </Link>
-              <Total>{bedsTotal} camas</Total>
+              <Total>
+                {_bedsTotal
+                  ? new Intl.NumberFormat().format(Math.round(_bedsTotal))
+                  : new Intl.NumberFormat().format(
+                      Math.round(estimatedBedsTotal)
+                    )}{" "}
+                camas
+              </Total>
             </General>
           </Pais>
           <Icon>

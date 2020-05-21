@@ -74,7 +74,6 @@ const Home = ({
       <h2 style={{ fontWeight: "500", marginBottom: "35px", fontSize: "21px" }}>
         Países con mas camas
       </h2>
-      {/* {console.log(listCountriesMostPopulation.map((c) => c.code))} */}
       {error && <Fatal />}
       {loading ? (
         <SkeletonCards />
