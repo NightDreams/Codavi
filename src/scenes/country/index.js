@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/jsx-fragments */
 import React, { Fragment, useEffect, useState } from "react";
@@ -35,6 +36,9 @@ const Div = styled.div`
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: 1fr;
   grid-column-gap: 50px;
+  @media only screen and (max-width: 920px) {
+    grid-template-columns: 100%;
+  }
 `;
 
 const ViewOptions = styled.ul`
@@ -58,6 +62,21 @@ const TitleView = styled.small`
   position: relative;
   top: -7px;
   margin-right: 10px;
+`;
+
+const Restriction = styled.div`
+  margin: 10px 0;
+  padding-bottom: 15px;
+  &:not(:last-child) {
+    border-bottom: 1px solid #e5e5e5;
+  }
+  small {
+    color: #50c7d2;
+    text-transform: uppercase;
+  }
+  p {
+    font-size: 14px;
+  }
 `;
 
 export const CountryDetails = ({
@@ -85,13 +104,28 @@ export const CountryDetails = ({
     getCountry(code: $code) {
       _id
       code
+      lat
+      lng
       bedsTotal
+      bedsAverage
+      populationAverage
+      estimatedBedsTotal
+      estimatedBedsAverage
       typebed{
-        type
-        population
+           type
+           total
+           percentage
+           population
+           estimatedForPopulation
+           source
+           sourceUrl
+           year
       }
       restrictions{
-        dateStart
+           dateStart
+           dateEnd
+           description
+           keywords
       }
     }
   }`;
@@ -114,7 +148,7 @@ export const CountryDetails = ({
       ) : (
         <Fragment>
           <TitleCountry>{countryName}</TitleCountry>
-          <AboutSection>Camas y precauciones</AboutSection>
+          <AboutSection>Camas y restricciones</AboutSection>
           <Separation />
           <Div>
             <div style={{ position: "relative" }}>
@@ -147,7 +181,14 @@ export const CountryDetails = ({
                   <Rows>
                     <Filtros>Tipo de cama</Filtros>
                     {dataCountry.typebed.map((b) => (
-                      <li key={b.type}>{b.type}</li>
+                      <>
+                        <li
+                          key={b.type}
+                          style={{ color: b.type === "total" && "#000" }}
+                        >
+                          {b.type}
+                        </li>
+                      </>
                     ))}
                   </Rows>
                   <Rows>
@@ -168,12 +209,19 @@ export const CountryDetails = ({
               )}
             </div>
             <div>
-              <h4>Precauciones</h4>
-              <p>
+              <h4>Restricciones</h4>
+              <div>
                 {!dataCountry.restrictions.length
                   ? "No hay restricciones displonibles para este país"
-                  : dataCountry.restrictions}
-              </p>
+                  : dataCountry.restrictions.map(
+                      ({ dateStart, description }) => (
+                        <Restriction>
+                          <small>{dateStart}</small>
+                          <p>{description}</p>
+                        </Restriction>
+                      )
+                    )}
+              </div>
             </div>
           </Div>
         </Fragment>

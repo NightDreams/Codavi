@@ -12,6 +12,7 @@ import logoCodavi from "../../assets/logo_codavi.svg";
 import Dropdown from "../../components/Dropdown";
 import Menu from "../../components/Dropdown/Menu";
 import { Recent } from "../../components/Recent";
+import { OptionsMobile } from "../../components/OptionsMobile";
 
 // Media Query
 import { useMediaQuery } from "react-responsive";
@@ -56,14 +57,35 @@ const ButtonMenu = styled.button`
     0 9px 46px 8px rgba(0, 0, 0, 0.12), 0 11px 15px -7px rgba(0, 0, 0, 0.2);
 `;
 
+// Mobile
+const Content = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 30px 0;
+`;
+
 const Header = ({ location }) => {
   const isMobileAndIpad = useMediaQuery({
     query: "(max-device-width: 768px)",
   });
+
   const [open, setOpen] = useState(false);
   useEffect(() => {
     setOpen(false);
+    setIsShowFilters(false);
   }, [location]);
+
+  const [isVisble, setVisible] = useState(false);
+  const showOptions = () => {
+    setVisible(!isVisble);
+  };
+
+  const [isShowFilters, setIsShowFilters] = useState(false);
+  const showFilters = () => {
+    setIsShowFilters(true);
+    setOpen(true);
+  };
 
   return (
     <Fragment>
@@ -74,7 +96,7 @@ const Header = ({ location }) => {
           </Link>
         </div>
         {isMobileAndIpad ? (
-          <ButtonMenu>
+          <ButtonMenu onClick={showOptions}>
             <MenuIcon />
           </ButtonMenu>
         ) : (
@@ -105,6 +127,35 @@ const Header = ({ location }) => {
           </ItemsNav>
         )}
       </Navegation>
+      <OptionsMobile isVisble={isVisble}>
+        <div>
+          {/* <div>
+            <button>X</button>
+          </div> */}
+          <div>
+            {isShowFilters ? (
+              // <div>Filters</div>
+              open && (
+                <Menu>
+                  <Recent />
+                </Menu>
+              )
+            ) : (
+              <Content>
+                <div>
+                  <Link to="/saved">
+                    {" "}
+                    <span>Guardados</span>{" "}
+                  </Link>
+                </div>
+                <div>
+                  <span onClick={showFilters}>Filtros</span>
+                </div>
+              </Content>
+            )}
+          </div>
+        </div>
+      </OptionsMobile>
     </Fragment>
   );
 };

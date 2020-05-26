@@ -17,15 +17,15 @@ import { Fatal } from "../../utils/feedback/Fatal";
 import Bed from "../../assets/bed.png";
 
 const Information = styled.div`
+  grid-template-columns: repeat(auto-fill, minmax(24em, 1fr));
+  grid-template-rows: 1fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
   background: #4487bb1c;
   padding: 15px 40px;
   margin-bottom: 3em;
   border-radius: 10px;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: 1fr;
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
   div {
     display: flex;
     justify-content: center;
@@ -35,6 +35,17 @@ const Information = styled.div`
     font-size: 20px;
     color: #4487bb;
     font-weight: 500;
+  }
+  @media only screen and (max-width: 920px) {
+    grid-template-columns: 100%;
+    padding: 25px;
+    margin-bottom: 2em;
+    h2 {
+      font-size: 15px;
+    }
+    img {
+      display: none;
+    }
   }
 `;
 
