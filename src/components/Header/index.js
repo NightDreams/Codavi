@@ -90,6 +90,7 @@ const Header = ({ location }) => {
   const [open, setOpen] = useState(false);
   useEffect(() => {
     setVisible(false);
+    setOpen(false);
     setIsShowFilters(false);
   }, [location]);
 
