@@ -6,6 +6,7 @@ import { Button } from "../../styles";
 import { ReactComponent as MenuIcon } from "../../icons/menu.svg";
 import { ReactComponent as FilterIcon } from "../../icons/filter.svg";
 import { ReactComponent as SavedIcon } from "../../icons/saved.svg";
+import { ReactComponent as TimesIcon } from "../../icons/times.svg";
 import logoCodavi from "../../assets/logo_codavi.svg";
 
 // Dropdown
@@ -57,6 +58,17 @@ const ButtonMenu = styled.button`
     0 9px 46px 8px rgba(0, 0, 0, 0.12), 0 11px 15px -7px rgba(0, 0, 0, 0.2);
 `;
 
+const ButtonHideOptions = styled.div`
+  position: absolute;
+  right: 30px;
+  top: 16px;
+  button > svg {
+    color: grey;
+    width: 18px;
+    height: 18px;
+  }
+`;
+
 // Mobile
 const Content = styled.div`
   display: flex;
@@ -70,16 +82,16 @@ const Header = ({ location }) => {
     query: "(max-device-width: 768px)",
   });
 
-  const [open, setOpen] = useState(false);
-  useEffect(() => {
-    setOpen(false);
-    setIsShowFilters(false);
-  }, [location]);
-
   const [isVisble, setVisible] = useState(false);
   const showOptions = () => {
     setVisible(!isVisble);
   };
+
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    setVisible(false);
+    setIsShowFilters(false);
+  }, [location]);
 
   const [isShowFilters, setIsShowFilters] = useState(false);
   const showFilters = () => {
@@ -129,14 +141,15 @@ const Header = ({ location }) => {
       </Navegation>
       <OptionsMobile isVisble={isVisble}>
         <div>
-          {/* <div>
-            <button>X</button>
-          </div> */}
+          <ButtonHideOptions>
+            <button onClick={showOptions}>
+              <TimesIcon />
+            </button>
+          </ButtonHideOptions>
           <div>
             {isShowFilters ? (
-              // <div>Filters</div>
               open && (
-                <Menu>
+                <Menu mobile>
                   <Recent />
                 </Menu>
               )

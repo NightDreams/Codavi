@@ -10,7 +10,7 @@ const Wrapper = styled.div`
   z-index: 1;
   max-height: 300px;
   overflow: scroll;
-  padding: 20px 10px;
+  padding: 30px 10px 20px;
   border-radius: 20px 20px 0 0;
   box-shadow: rgba(2, 8, 20, 0.1) 0px 0.175em 0.5em,
     rgba(2, 8, 20, 0.08) 0px 0.085em;

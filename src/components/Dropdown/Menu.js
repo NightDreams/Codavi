@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import * as listCountriesActions from "../../actions/listCountriesActions";
 
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { CSSTransition } from "react-transition-group";
 
 import { MenuSecondary } from "./MenuSecundary";
@@ -15,6 +15,28 @@ const Title = styled.h4`
   color: #50c7d2;
   margin: 0 0 4px 0;
   font-size: 15px;
+`;
+
+const Dropdown = styled.div`
+  ${(props) =>
+    props.isMobile
+      ? css`
+          padding: 10px 5px;
+        `
+      : css`
+          position: absolute;
+          top: 62px;
+          right: 60px;
+          width: 250px;
+          max-height: 310px;
+          background-color: #fff;
+          border-radius: var(--border-radius);
+          box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+          overflow: scroll;
+          transition: height var(--speed) ease;
+          z-index: 1;
+          padding: 10px 5px;
+        `}
 `;
 
 const Menu = ({
@@ -29,6 +51,7 @@ const Menu = ({
   listEurope,
   getOceaniaCountries,
   listOceania,
+  mobile,
 }) => {
   const [activeMenu, setActiveMenu] = useState("main");
 
@@ -59,7 +82,7 @@ const Menu = ({
   };
 
   return (
-    <div className="dropdown">
+    <Dropdown isMobile={mobile}>
       <CSSTransition
         in={activeMenu === "main"}
         timeout={500}
@@ -121,7 +144,7 @@ const Menu = ({
         setActiveMenu={setActiveMenu}
         listCountriesContinent={listOceania}
       />
-    </div>
+    </Dropdown>
   );
 };
 

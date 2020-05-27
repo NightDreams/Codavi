@@ -112,20 +112,19 @@ export const CountryDetails = ({
       estimatedBedsTotal
       estimatedBedsAverage
       typebed{
-           type
-           total
-           percentage
-           population
-           estimatedForPopulation
-           source
-           sourceUrl
-           year
+        type
+        total
+        percentage
+        population
+        estimatedForPopulation
+        source
+        sourceUrl
+        year
       }
       restrictions{
-           dateStart
-           dateEnd
-           description
-           keywords
+        dateStart
+        description
+        keywords
       }
     }
   }`;
