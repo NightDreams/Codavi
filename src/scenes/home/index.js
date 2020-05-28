@@ -5,7 +5,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
-import * as countriesDetailsReducer from "../../actions/countriesDetailsActions";
+import * as countriesDetailsAction from "../../actions/countriesDetailsActions";
 
 import { BedCard } from "../../components/Bed-card/index";
 import { Div } from "../../components/CardList/styles";
@@ -50,13 +50,18 @@ const Information = styled.div`
 `;
 
 const Home = ({
-  getMostPopulation,
-  listCountriesMostPopulation,
-  loading,
-  error,
+  getCountriesWithMoreBedsList,
+  countriesWithMoreBedsList,
+  loadingMore,
+  errorMore,
+  getCountriesWithFewerBedsList,
+  countriesWithFewerBedsList,
+  loadingFewer,
+  errorFewer,
 }) => {
   useEffect(() => {
-    !listCountriesMostPopulation.length && getMostPopulation();
+    !countriesWithMoreBedsList.length && getCountriesWithMoreBedsList();
+    !countriesWithFewerBedsList.length && getCountriesWithFewerBedsList();
   }, []);
 
   const getSaveCards = JSON.parse(localStorage.getItem("saveCard")) || [];
@@ -82,15 +87,32 @@ const Home = ({
           <img src={Bed} alt="" />
         </div>
       </Information>
-      <h2 style={{ fontWeight: "500", marginBottom: "35px", fontSize: "21px" }}>
-        Países con mas camas
+      <div style={{ marginBottom: "2.5em" }}>
+        <h2
+          style={{ fontWeight: "500", marginBottom: "35px", fontSize: "20px" }}
+        >
+          Países con mas camas disponibles
+        </h2>
+        {errorMore && <Fatal />}
+        {loadingMore ? (
+          <SkeletonCards />
+        ) : (
+          <Div>
+            {countriesWithMoreBedsList.map((country) => (
+              <BedCard key={country._id} {...country} removeItem={removeItem} />
+            ))}
+          </Div>
+        )}
+      </div>
+      <h2 style={{ fontWeight: "500", marginBottom: "35px", fontSize: "20px" }}>
+        Países con menos camas disponibles
       </h2>
-      {error && <Fatal />}
-      {loading ? (
+      {errorFewer && <Fatal />}
+      {loadingFewer ? (
         <SkeletonCards />
       ) : (
         <Div>
-          {listCountriesMostPopulation.map((country) => (
+          {countriesWithFewerBedsList.map((country) => (
             <BedCard key={country._id} {...country} removeItem={removeItem} />
           ))}
         </Div>
@@ -103,4 +125,4 @@ const mapStateToProps = (reducers) => {
   return reducers.countriesDetailsReducer;
 };
 
-export default connect(mapStateToProps, countriesDetailsReducer)(Home);
+export default connect(mapStateToProps, countriesDetailsAction)(Home);

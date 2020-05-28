@@ -1,30 +1,49 @@
 const INITIAL_STATE = {
-  listCountriesMostPopulation: [],
+  countriesWithMoreBedsList: [],
+  loadingMore: false,
+  errorMore: "",
+  countriesWithFewerBedsList: [],
+  loadingFewer: false,
+  errorFewer: "",
   countryDetails: {},
-  loading: false,
-  error: "",
 };
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case "get_most_population":
+    // getTopEstimateCountrys
+    case "get_more_beds":
       return {
         ...state,
-        listCountriesMostPopulation: action.payload,
-        loading: false,
+        countriesWithMoreBedsList: action.payload.getTopEstimateCountrys,
+        loadingMore: false,
       };
 
+    case "loadingMore":
+      return { ...state, loadingMore: true };
+
+    case "error_more":
+      return { ...state, errorMore: action.payload, loadingMore: false };
+
+    // getBottomEstimateCountrys
+    case "get_fewer_beds":
+      return {
+        ...state,
+        countriesWithFewerBedsList: action.payload.getBottomEstimateCountrys,
+        loadingFewer: false,
+      };
+
+    case "loadingFewer":
+      return { ...state, loadingFewer: true };
+
+    case "error_fewer":
+      return { ...state, errorFewer: action.payload, loadingFewer: false };
+
+    // Country details
     case "get_country_details":
       return {
         ...state,
         countryDetails: action.payload,
       };
-
-    case "loading":
-      return { ...state, loading: true };
-
-    case "error":
-      return { ...state, error: action.payload, loading: false };
 
     default:
       return state;

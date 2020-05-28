@@ -1,8 +1,9 @@
+/* eslint-disable no-unneeded-ternary */
 /* eslint-disable react/jsx-key */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/jsx-fragments */
 import React, { Fragment, useEffect, useState } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { useCountryFlag } from "../../utils/hooks/useCountryFlag";
 import { request } from "graphql-request";
 import { Rows, Data, Filtros } from "../../components/Bed-card/styles";
@@ -10,12 +11,20 @@ import { SkeletonCountryDetails } from "../../utils/feedback/SkeletonCountryDeta
 import { ReactComponent as TableIcon } from "../../icons/list.svg";
 import { ReactComponent as ChartIcon } from "../../icons/chart.svg";
 import Chart from "react-google-charts";
+import { Saved } from "../../components/Bed-card/Saved";
+
+// Media Query
+import { useMediaQuery } from "react-responsive";
 
 const TitleCountry = styled.p`
   margin: 0;
   text-transform: uppercase;
   color: #50c7d2;
   letter-spacing: 1.1px;
+  font-size: 18px;
+  @media screen and (max-width: 768px) {
+    font-size: 16px;
+  }
 `;
 
 const Separation = styled.hr`
@@ -27,7 +36,7 @@ const Separation = styled.hr`
 const AboutSection = styled.h1`
   margin: 0 0 1em 0;
   @media screen and (max-width: 576px) {
-    font-size: 23px;
+    font-size: 21px;
   }
 `;
 
@@ -79,13 +88,77 @@ const Restriction = styled.div`
   }
 `;
 
+const IconSaved = styled.span`
+  cursor: pointer;
+  color: #898989;
+  svg {
+    width: 20px;
+  }
+  ${(props) =>
+    !props.mobile &&
+    css`
+      position: absolute;
+      right: 6em;
+      top: 8.4em;
+      svg {
+        width: 24px;
+      }
+    `};
+`;
+
+const Leyenda = styled.small`
+  float: right;
+  color: #4c4c4c;
+  padding-top: 7px;
+`;
+
 export const CountryDetails = ({
   match: {
     params: { countryCode },
   },
 }) => {
+  const isMobileAndIpad = useMediaQuery({
+    query: "(max-device-width: 768px)",
+  });
+
+  const query = `query get($code: String!) {
+      getCountry(code: $code) {
+        _id
+        code
+        lat
+        lng
+        bedsTotal
+        bedsAverage
+        populationAverage
+        estimatedBedsTotal
+        estimatedBedsAverage
+        typebed{
+          type
+          total
+          percentage
+          population
+          estimatedForPopulation
+          source
+          sourceUrl
+          year
+        }
+        restrictions{
+          dateStart
+          description
+          keywords
+        }
+      }
+    }`;
+
   const countryName = useCountryFlag(countryCode);
   const [dataCountry, setData] = useState({});
+
+  useEffect(() => {
+    request("https://app-backend-graphql.herokuapp.com/", query, {
+      code: `${countryCode}`,
+    }).then((data) => setData(data.getCountry));
+    // setData({});
+  }, [dataCountry]);
 
   const data = [
     ["Task", "Hours per Day"],
@@ -100,41 +173,6 @@ export const CountryDetails = ({
     is3D: false,
   };
 
-  const query = `query get($code: String!) {
-    getCountry(code: $code) {
-      _id
-      code
-      lat
-      lng
-      bedsTotal
-      bedsAverage
-      populationAverage
-      estimatedBedsTotal
-      estimatedBedsAverage
-      typebed{
-        type
-        total
-        percentage
-        population
-        estimatedForPopulation
-        source
-        sourceUrl
-        year
-      }
-      restrictions{
-        dateStart
-        description
-        keywords
-      }
-    }
-  }`;
-
-  useEffect(() => {
-    request("https://app-backend-graphql.herokuapp.com/", query, {
-      code: `${countryCode}`,
-    }).then((data) => setData(data.getCountry));
-  }, [countryCode]);
-
   const [view, setView] = useState("table");
   const changeView = (view) => {
     setView(view);
@@ -142,12 +180,21 @@ export const CountryDetails = ({
 
   return (
     <Fragment>
+      {console.log(dataCountry)}
       {Object.entries(dataCountry).length === 0 ? (
         <SkeletonCountryDetails />
       ) : (
         <Fragment>
-          <TitleCountry>{countryName}</TitleCountry>
-          <AboutSection>Camas y restricciones</AboutSection>
+          <div>
+            <IconSaved mobile={isMobileAndIpad ? true : false}>
+              <Saved
+                code={countryCode}
+                estimatedBedsTotal={dataCountry.estimatedBedsTotal}
+              />
+            </IconSaved>
+            <TitleCountry>{countryName}</TitleCountry>
+            <AboutSection>Camas y restricciones</AboutSection>
+          </div>
           <Separation />
           <Div>
             <div style={{ position: "relative" }}>
@@ -176,27 +223,29 @@ export const CountryDetails = ({
                 </li>
               </ViewOptions>
               {view === "table" ? (
-                <Data>
-                  <Rows>
-                    <Filtros>Tipo de cama</Filtros>
-                    {dataCountry.typebed.map((b) => (
-                      <>
-                        <li
-                          key={b.type}
-                          style={{ color: b.type === "total" && "#000" }}
-                        >
-                          {b.type}
+                <Fragment>
+                  <Data>
+                    <Rows>
+                      <Filtros>Tipo de cama</Filtros>
+                      {dataCountry.typebed.map(({ type }) => (
+                        <>
+                          <li key={type}>{type}</li>
+                        </>
+                      ))}
+                    </Rows>
+                    <Rows>
+                      <Filtros>Numero</Filtros>
+                      {dataCountry.typebed.map(({ population }) => (
+                        <li key={population}>
+                          {new Intl.NumberFormat().format(
+                            Math.round(population)
+                          )}
                         </li>
-                      </>
-                    ))}
-                  </Rows>
-                  <Rows>
-                    <Filtros>Numero</Filtros>
-                    {dataCountry.typebed.map((b) => (
-                      <li key={b.population}>{b.population}</li>
-                    ))}
-                  </Rows>
-                </Data>
+                      ))}
+                    </Rows>
+                  </Data>
+                  <Leyenda>* Datos con una escala de 1000</Leyenda>
+                </Fragment>
               ) : (
                 <Chart
                   chartType="PieChart"
