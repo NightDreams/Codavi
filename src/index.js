@@ -1,6 +1,8 @@
-import React from "react";
+import React, { Suspense } from "react";
 import ReactDOM from "react-dom";
 import App from "./routes/App";
+
+import "./i18next";
 
 import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
@@ -17,7 +19,9 @@ const store = createStore(
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <Suspense fallback={<div>Loading ---</div>}>
+        <App />
+      </Suspense>
     </Provider>
   </React.StrictMode>,
   document.getElementById("root")

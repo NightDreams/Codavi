@@ -5,8 +5,10 @@ import * as listCountriesActions from "../../actions/listCountriesActions";
 
 import styled, { css } from "styled-components";
 import { CSSTransition } from "react-transition-group";
-
 import { MenuSecondary } from "./MenuSecundary";
+
+// Translation
+import { useTranslation } from "react-i18next";
 
 const Title = styled.h4`
   text-align: left;
@@ -53,6 +55,7 @@ const Menu = ({
   listOceania,
   mobile,
 }) => {
+  const { t } = useTranslation();
   const [activeMenu, setActiveMenu] = useState("main");
 
   const renderCountriesAmerica = () =>
@@ -91,7 +94,7 @@ const Menu = ({
       >
         <div className="menu">
           {children}
-          <Title>Continentes</Title>
+          <Title>{t("global.continents")}</Title>
           <span onClick={renderCountriesAmerica}>
             <DropdownItem goToMenu="america">America</DropdownItem>
           </span>

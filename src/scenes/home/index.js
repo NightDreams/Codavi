@@ -16,6 +16,9 @@ import { Fatal } from "../../utils/feedback/Fatal";
 
 import Bed from "../../assets/bed.png";
 
+// Translation
+import { useTranslation } from "react-i18next";
+
 const Information = styled.div`
   grid-template-columns: repeat(auto-fill, minmax(24em, 1fr));
   grid-template-rows: 1fr;
@@ -59,6 +62,8 @@ const Home = ({
   loadingFewer,
   errorFewer,
 }) => {
+  const { t } = useTranslation();
+
   useEffect(() => {
     !countriesWithMoreBedsList.length && getCountriesWithMoreBedsList();
     !countriesWithFewerBedsList.length && getCountriesWithFewerBedsList();
@@ -78,10 +83,7 @@ const Home = ({
     <Fragment>
       <Information>
         <div>
-          <h2>
-            Informate sobre el tipo y total de camas disponibles en el mundo
-            para el COVID-19
-          </h2>
+          <h2>{t("global.about")}</h2>
         </div>
         <div>
           <img src={Bed} alt="" />
@@ -91,7 +93,7 @@ const Home = ({
         <h2
           style={{ fontWeight: "500", marginBottom: "35px", fontSize: "20px" }}
         >
-          Países con mas camas disponibles
+          {t("global.bedsAviable")}
         </h2>
         {errorMore && <Fatal />}
         {loadingMore ? (
@@ -105,7 +107,7 @@ const Home = ({
         )}
       </div>
       <h2 style={{ fontWeight: "500", marginBottom: "35px", fontSize: "20px" }}>
-        Países con menos camas disponibles
+        {t("global.bedsFewer")}
       </h2>
       {errorFewer && <Fatal />}
       {loadingFewer ? (

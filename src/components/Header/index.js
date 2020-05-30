@@ -1,13 +1,17 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/jsx-fragments */
 import React, { useEffect, useState, Fragment } from "react";
 import { Link, withRouter } from "react-router-dom";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Button } from "../../styles";
 import { ReactComponent as MenuIcon } from "../../icons/menu.svg";
 import { ReactComponent as FilterIcon } from "../../icons/filter.svg";
 import { ReactComponent as SavedIcon } from "../../icons/saved.svg";
 import { ReactComponent as TimesIcon } from "../../icons/times.svg";
+import { ReactComponent as GlobeIcon } from "../../icons/globe.svg";
+import { ReactComponent as CheckIcon } from "../../icons/check.svg";
 import logoCodavi from "../../assets/logo_codavi.svg";
+import ReactCountryFlag from "react-country-flag";
 
 // Dropdown
 import Dropdown from "../../components/Dropdown";
@@ -17,6 +21,9 @@ import { OptionsMobile } from "../../components/OptionsMobile";
 
 // Media Query
 import { useMediaQuery } from "react-responsive";
+
+// Translation
+import { useTranslation } from "react-i18next";
 
 const Navegation = styled.div`
   display: grid;
@@ -77,7 +84,52 @@ const Content = styled.div`
   padding: 30px 0;
 `;
 
+const MenuDrop = styled.div`
+  ${(props) =>
+    props.isMobile
+      ? css`
+          padding: 10px 5px;
+        `
+      : css`
+          position: absolute;
+          top: 62px;
+          right: 60px;
+          width: 250px;
+          max-height: 310px;
+          background-color: #fff;
+          border-radius: var(--border-radius);
+          box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+          overflow: scroll;
+          transition: height var(--speed) ease;
+          z-index: 1;
+          padding: 10px 5px;
+        `}
+`;
+
+const CheckSpan = styled.span`
+  position: absolute;
+  right: 19px;
+  vertical-align: middle;
+  display: flex;
+  color: grey;
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+`;
+
+const DropdownItem = ({ children }) => {
+  return (
+    <a className="menu-item">
+      <span className="icon-button" />
+      {children}
+    </a>
+  );
+};
+
 const Header = ({ location }) => {
+  const { t, i18n } = useTranslation();
+
   const isMobileAndIpad = useMediaQuery({
     query: "(max-device-width: 768px)",
   });
@@ -100,6 +152,13 @@ const Header = ({ location }) => {
     setOpen(true);
   };
 
+  const [openLan, setOpenLan] = useState(false);
+
+  const changelanguage = (lang) => {
+    i18n.changeLanguage(lang);
+    setOpenLan(false);
+  };
+
   return (
     <Fragment>
       <Navegation>
@@ -120,21 +179,78 @@ const Header = ({ location }) => {
                   {" "}
                   <SavedIcon />
                 </span>{" "}
-                Guardado
+                {t("global.saved")}
               </Button>
             </Link>
             <Dropdown>
-              <Button type="primary" onClick={() => setOpen(!open)}>
+              <Button
+                type="primary"
+                onClick={() => {
+                  setOpen(!open);
+                  setOpenLan(false);
+                }}
+              >
                 <span>
                   {" "}
                   <FilterIcon />
                 </span>{" "}
-                Filtros
+                {t("global.filters")}
               </Button>
               {open && (
                 <Menu>
                   <Recent />
                 </Menu>
+              )}
+            </Dropdown>
+            <Dropdown>
+              <Button
+                onClick={() => {
+                  setOpenLan(!openLan);
+                  setOpen(false);
+                }}
+              >
+                <span>
+                  <GlobeIcon />
+                </span>
+              </Button>
+              {openLan && (
+                <MenuDrop>
+                  <span onClick={() => changelanguage("es")}>
+                    <DropdownItem>
+                      {" "}
+                      <ReactCountryFlag
+                        countryCode="MX"
+                        style={{
+                          fontSize: "1em",
+                          margin: "3px 5px 0 0",
+                        }}
+                      />{" "}
+                      Español
+                      {i18n.languages[0] === "es" && (
+                        <CheckSpan>
+                          <CheckIcon />
+                        </CheckSpan>
+                      )}
+                    </DropdownItem>
+                  </span>
+                  <span onClick={() => changelanguage("en")}>
+                    <DropdownItem>
+                      <ReactCountryFlag
+                        countryCode="US"
+                        style={{
+                          fontSize: "1em",
+                          margin: "3px 5px 0 0",
+                        }}
+                      />
+                      English
+                      {i18n.languages[0] === "en" && (
+                        <CheckSpan>
+                          <CheckIcon />
+                        </CheckSpan>
+                      )}
+                    </DropdownItem>
+                  </span>
+                </MenuDrop>
               )}
             </Dropdown>
           </ItemsNav>

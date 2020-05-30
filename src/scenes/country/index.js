@@ -16,6 +16,9 @@ import { Saved } from "../../components/Bed-card/Saved";
 // Media Query
 import { useMediaQuery } from "react-responsive";
 
+// Translation
+import { useTranslation } from "react-i18next";
+
 const TitleCountry = styled.p`
   margin: 0;
   text-transform: uppercase;
@@ -34,10 +37,16 @@ const Separation = styled.hr`
 `;
 
 const AboutSection = styled.h1`
-  margin: 0 0 1em 0;
+  margin: 0;
   @media screen and (max-width: 576px) {
     font-size: 21px;
   }
+`;
+
+const TotalBeds = styled.p`
+  font-size: 14.5px;
+  margin-bottom: 1.7em;
+  color: #4c4c4c;
 `;
 
 const Div = styled.div`
@@ -117,6 +126,8 @@ export const CountryDetails = ({
     params: { countryCode },
   },
 }) => {
+  const { t } = useTranslation();
+
   const isMobileAndIpad = useMediaQuery({
     query: "(max-device-width: 768px)",
   });
@@ -158,7 +169,7 @@ export const CountryDetails = ({
       code: `${countryCode}`,
     }).then((data) => setData(data.getCountry));
     // setData({});
-  }, [dataCountry]);
+  }, [countryCode]);
 
   const data = [
     ["Task", "Hours per Day"],
@@ -193,14 +204,15 @@ export const CountryDetails = ({
               />
             </IconSaved>
             <TitleCountry>{countryName}</TitleCountry>
-            <AboutSection>Camas y restricciones</AboutSection>
+            <AboutSection>{t("countryDetails.title")}</AboutSection>
+            <TotalBeds>12,000 {t("countryDetails.descTotalBeds")}</TotalBeds>
           </div>
           <Separation />
           <Div>
             <div style={{ position: "relative" }}>
-              <h4>Camas disponibles</h4>
+              <h4>{t("countryDetails.aviableBeds")}</h4>
               <ViewOptions>
-                <TitleView>Vista:</TitleView>
+                <TitleView>{t("countryDetails.view")}:</TitleView>
                 <li onClick={() => changeView("table")}>
                   {" "}
                   <TableIcon
@@ -226,7 +238,7 @@ export const CountryDetails = ({
                 <Fragment>
                   <Data>
                     <Rows>
-                      <Filtros>Tipo de cama</Filtros>
+                      <Filtros>{t("countryDetails.dataTable.type")}</Filtros>
                       {dataCountry.typebed.map(({ type }) => (
                         <>
                           <li key={type}>{type}</li>
@@ -234,17 +246,15 @@ export const CountryDetails = ({
                       ))}
                     </Rows>
                     <Rows>
-                      <Filtros>Numero</Filtros>
-                      {dataCountry.typebed.map(({ population }) => (
-                        <li key={population}>
-                          {new Intl.NumberFormat().format(
-                            Math.round(population)
-                          )}
+                      <Filtros>{t("countryDetails.dataTable.number")}</Filtros>
+                      {dataCountry.typebed.map(({ total }) => (
+                        <li key={total}>
+                          {new Intl.NumberFormat().format(Math.round(total))}
                         </li>
                       ))}
                     </Rows>
                   </Data>
-                  <Leyenda>* Datos con una escala de 1000</Leyenda>
+                  <Leyenda>* {t("countryDetails.dataTable.legend")}</Leyenda>
                 </Fragment>
               ) : (
                 <Chart
@@ -257,10 +267,10 @@ export const CountryDetails = ({
               )}
             </div>
             <div>
-              <h4>Restricciones</h4>
+              <h4>{t("countryDetails.restrictions")}</h4>
               <div>
                 {!dataCountry.restrictions.length
-                  ? "No hay restricciones displonibles para este país"
+                  ? t("feedback.noRestrictions")
                   : dataCountry.restrictions.map(
                       ({ dateStart, description }) => (
                         <Restriction>

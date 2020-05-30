@@ -4,7 +4,11 @@ import React, { Fragment, useState } from "react";
 import { BedCard } from "../../components/Bed-card/index";
 import { Div } from "../../components/CardList/styles";
 
+// Translation
+import { useTranslation } from "react-i18next";
+
 export const Saved = () => {
+  const { t } = useTranslation();
   const getSaveCards = JSON.parse(localStorage.getItem("saveCard")) || [];
 
   const [savedCountries, setSaved] = useState(getSaveCards);
@@ -17,7 +21,9 @@ export const Saved = () => {
 
   return (
     <Fragment>
-      <h2 style={{ fontWeight: "500", marginBottom: "35px" }}>Mis guardados</h2>
+      <h2 style={{ fontWeight: "500", marginBottom: "35px" }}>
+        {t("global.mySaved")}
+      </h2>
       {savedCountries.length === 0 ? (
         <p>No hay nada bro</p>
       ) : (

@@ -11,6 +11,9 @@ import { useCountryFlag } from "../../utils/hooks/useCountryFlag";
 
 import { Saved } from "./Saved";
 
+// Translation
+import { useTranslation } from "react-i18next";
+
 const CountryFlag = styled(ReactCountryFlag)`
   width: 2em !important;
   height: 2em !important;
@@ -26,6 +29,7 @@ export const BedCard = ({
   removeItem,
   estimatedBedsTotal,
 }) => {
+  const { t } = useTranslation();
   const countryName = useCountryFlag(code);
 
   return (
@@ -46,7 +50,7 @@ export const BedCard = ({
                   : new Intl.NumberFormat().format(
                       Math.round(estimatedBedsTotal)
                     )}{" "}
-                camas
+                {t("global.beds")}
               </Total>
             </General>
           </Pais>

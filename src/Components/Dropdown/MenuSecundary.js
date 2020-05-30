@@ -5,6 +5,9 @@ import styled from "styled-components";
 import { CSSTransition } from "react-transition-group";
 import { ReactComponent as ArrowLeftIcon } from "../../icons/arrow-left.svg";
 
+// Translation
+import { useTranslation } from "react-i18next";
+
 const Title = styled.p`
   font-weight: 600;
 `;
@@ -15,6 +18,7 @@ export const MenuSecondary = ({
   setActiveMenu,
   listCountriesContinent,
 }) => {
+  const { t } = useTranslation();
   const DropdownItem = ({ goToMenu, leftIcon, children }) => {
     return (
       <a
@@ -55,7 +59,7 @@ export const MenuSecondary = ({
     >
       <div className="menu">
         <DropdownItem goToMenu="main" leftIcon={<ArrowLeftIcon />}>
-          <Title>Continentes</Title>
+          <Title>{t("global.continents")}</Title>
         </DropdownItem>
         {listCountriesContinent.map(({ alpha2Code, name, numericCode }) => (
           <Link
