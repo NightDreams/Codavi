@@ -4,6 +4,8 @@ import React, { Fragment, useState } from "react";
 import { BedCard } from "../../components/Bed-card/index";
 import { Div } from "../../components/CardList/styles";
 
+import { NotSaved } from "../../components/NotSaved";
+
 // Translation
 import { useTranslation } from "react-i18next";
 
@@ -25,7 +27,7 @@ export const Saved = () => {
         {t("global.mySaved")}
       </h2>
       {savedCountries.length === 0 ? (
-        <p>No hay nada bro</p>
+        <NotSaved />
       ) : (
         <Div>
           {savedCountries.map((country) => (
