@@ -27,7 +27,10 @@ export const Saved = () => {
         {t("global.mySaved")}
       </h2>
       {savedCountries.length === 0 ? (
-        <NotSaved />
+        <Fragment>
+          <h3>Let's add some countries </h3>
+          <NotSaved />
+        </Fragment>
       ) : (
         <Div>
           {savedCountries.map((country) => (

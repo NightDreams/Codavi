@@ -1,6 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { request } from "graphql-request";
+import { BedCard } from "../../components/Bed-card/index";
+import { Div } from "../../components/CardList/styles";
 
 export const NotSaved = () => {
   const query = ` 
@@ -36,15 +38,16 @@ export const NotSaved = () => {
     }
 
     setData(suggestions);
-    // console.log(suggestions);
+    console.log(suggestions);
   }, []);
 
+
+  console.log(data);
   return (
-    <>
-      <div>Not Saved</div>
-      {data.map(({ code }) => (
-        <p key={code}>{code}</p>
+    <Div>
+      {data.map(( data ) => (
+        <BedCard key={data._id} {...data}/>
       ))}
-    </>
+    </Div>
   );
 };
