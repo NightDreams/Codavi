@@ -37,12 +37,14 @@ const Header = styled.div`
       }
       span {
         position: initial;
-        ${(props) =>
-          props.btnPosition === "btnRight" &&
-          css`
-            position: absolute;
-            right: 35px;
-          `}
+        @media screen and (max-width: 780px) {
+          ${(props) =>
+            props.btnPosition === "btnRight" &&
+            css`
+              position: absolute;
+              right: 35px;
+            `}
+        }
       }
     `}
 `;
