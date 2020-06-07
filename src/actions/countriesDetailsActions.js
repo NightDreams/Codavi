@@ -67,6 +67,44 @@ export const getCountriesWithFewerBedsList = () => (dispatch) => {
   requestTunk(query, dispatch, "get_fewer_beds", "error_fewer");
 };
 
+export const getSuggestions = () => (dispatch) => {
+  dispatch({
+    type: "loadingSuggestions",
+  });
+  const query = ` 
+  {
+    getCountrys{
+        code
+        lat
+        lng
+        bedsTotal
+        bedsAverage
+        populationAverage
+        estimatedBedsTotal
+        estimatedBedsAverage
+    }
+  }
+  `;
+  request("https://app-backend-graphql.herokuapp.com/", query)
+    .then((data) => {
+      // We select 8 random countries
+      const suggestions = data.getCountrys
+        .sort(() => Math.random() - Math.random())
+        .slice(0, 8);
+      dispatch({
+        type: "get_suggestions",
+        payload: suggestions,
+      });
+    })
+    .catch((error) => {
+      dispatch({
+        type: "error_suggestions",
+        payload: error.message,
+      });
+    });
+  // requestTunk(query, dispatch, "get_suggestions", "error_suggestions");
+};
+
 export const getCountryDetails = (countryCode) => (dispatch) => {
   const query = `query get($code: String!) {
         getCountry(code: $code) {

@@ -5,6 +5,9 @@ const INITIAL_STATE = {
   countriesWithFewerBedsList: [],
   loadingFewer: false,
   errorFewer: "",
+  countriesSeggestions: [],
+  loadingSeggestions: false,
+  errorSuggestions: "",
   countryDetails: {},
 };
 
@@ -37,6 +40,24 @@ export default (state = INITIAL_STATE, action) => {
 
     case "error_fewer":
       return { ...state, errorFewer: action.payload, loadingFewer: false };
+
+    // getCountriesSuggestions
+    case "get_suggestions":
+      return {
+        ...state,
+        countriesSeggestions: action.payload,
+        loadingSeggestions: false,
+      };
+
+    case "loadingSuggestions":
+      return { ...state, loadingSeggestions: true };
+
+    case "error_suggestions":
+      return {
+        ...state,
+        errorSuggestions: action.payload,
+        loadingSeggestions: false,
+      };
 
     // Country details
     case "get_country_details":

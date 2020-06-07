@@ -4,7 +4,8 @@ import React, { Fragment, useState } from "react";
 import { BedCard } from "../../components/Bed-card/index";
 import { Div } from "../../components/CardList/styles";
 
-import { NotSaved } from "../../components/NotSaved";
+// Feedback
+import { NoData } from "../../utils/feedback/NoData";
 
 // Translation
 import { useTranslation } from "react-i18next";
@@ -28,8 +29,7 @@ export const Saved = () => {
       </h2>
       {savedCountries.length === 0 ? (
         <Fragment>
-          <h3>Let's add some countries </h3>
-          <NotSaved />
+          <NoData />
         </Fragment>
       ) : (
         <Div>

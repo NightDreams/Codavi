@@ -19,6 +19,34 @@ import { useMediaQuery } from "react-responsive";
 // Translation
 import { useTranslation } from "react-i18next";
 
+const Header = styled.div`
+  ${(props) =>
+    props.fixed === "fixed" &&
+    css`
+      position: fixed;
+      top: 24px;
+      z-index: 1;
+      p {
+        margin-bottom: 0;
+      }
+      @media screen and (max-width: 780px) {
+        top: 0;
+        background: #fff;
+        right: 0;
+        padding: 16px 30px;
+      }
+      span {
+        position: initial;
+        ${(props) =>
+          props.btnPosition === "btnRight" &&
+          css`
+            position: absolute;
+            right: 35px;
+          `}
+      }
+    `}
+`;
+
 const TitleCountry = styled.p`
   margin: 0;
   text-transform: uppercase;
@@ -164,12 +192,21 @@ export const CountryDetails = ({
   const countryName = useCountryFlag(countryCode);
   const [dataCountry, setData] = useState({});
 
+  const [showFixed, setShowFixed] = useState(false);
   useEffect(() => {
     request("https://app-backend-graphql.herokuapp.com/", query, {
       code: `${countryCode}`,
     }).then((data) => setData(data.getCountry));
-    // setData({});
   }, [countryCode]);
+
+  useEffect(() => {
+    const onScroll = (e) => {
+      const newShowFixed = window.scrollY > 450;
+      showFixed !== newShowFixed && setShowFixed(newShowFixed);
+    };
+
+    document.addEventListener("scroll", onScroll);
+  });
 
   const data = [
     ["Task", "Hours per Day"],
@@ -189,24 +226,34 @@ export const CountryDetails = ({
     setView(view);
   };
 
+  const renderHeader = (fixed, btnPosition) => (
+    <Header fixed={fixed} btnPosition={btnPosition}>
+      <IconSaved mobile={isMobileAndIpad ? true : false}>
+        <Saved
+          code={countryCode}
+          estimatedBedsTotal={dataCountry.estimatedBedsTotal}
+        />
+      </IconSaved>
+      <TitleCountry>{countryName}</TitleCountry>
+      <AboutSection>{t("countryDetails.title")}</AboutSection>
+      <TotalBeds>
+        {new Intl.NumberFormat().format(
+          Math.round(dataCountry.estimatedBedsTotal)
+        )}{" "}
+        {t("countryDetails.descTotalBeds")}
+      </TotalBeds>
+    </Header>
+  );
+
   return (
     <Fragment>
-      {console.log(dataCountry)}
+      {/* {console.log(dataCountry)} */}
       {Object.entries(dataCountry).length === 0 ? (
         <SkeletonCountryDetails />
       ) : (
         <Fragment>
-          <div>
-            <IconSaved mobile={isMobileAndIpad ? true : false}>
-              <Saved
-                code={countryCode}
-                estimatedBedsTotal={dataCountry.estimatedBedsTotal}
-              />
-            </IconSaved>
-            <TitleCountry>{countryName}</TitleCountry>
-            <AboutSection>{t("countryDetails.title")}</AboutSection>
-            <TotalBeds>12,000 {t("countryDetails.descTotalBeds")}</TotalBeds>
-          </div>
+          {renderHeader()}
+          {showFixed && renderHeader("fixed", "btnRight")}
           <Separation />
           <Div>
             <div style={{ position: "relative" }}>
@@ -247,9 +294,11 @@ export const CountryDetails = ({
                     </Rows>
                     <Rows>
                       <Filtros>{t("countryDetails.dataTable.number")}</Filtros>
-                      {dataCountry.typebed.map(({ total }) => (
-                        <li key={total}>
-                          {new Intl.NumberFormat().format(Math.round(total))}
+                      {dataCountry.typebed.map(({ population }) => (
+                        <li key={population}>
+                          {new Intl.NumberFormat().format(
+                            Math.round(population)
+                          )}
                         </li>
                       ))}
                     </Rows>

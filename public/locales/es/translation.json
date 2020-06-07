@@ -15,7 +15,7 @@
     "aviableBeds": "Camas disponibles",
     "restrictions": "Restricciones",
     "view": "Vista",
-    "descTotalBeds": "de camas disponibls en todo el país",
+    "descTotalBeds": "camas disponibls en todo el país",
     "dataTable": {
       "type": "Tipo de cama",
       "number": "Numero",
@@ -23,6 +23,7 @@
     }
   },
   "feedback": {
-    "noRestrictions": "No hay restricciones displonibles para este país"
+    "noRestrictions": "No hay restricciones displonibles para este país",
+    "noData": "No tienes nada guardado"
   }
 }

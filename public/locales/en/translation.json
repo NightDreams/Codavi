@@ -15,7 +15,7 @@
     "aviableBeds": "Available beds",
     "restrictions": "Restrictions",
     "view": "View",
-    "descTotalBeds": "of beds available throughout the country",
+    "descTotalBeds": "beds available throughout the country",
     "dataTable": {
       "type": "Type of bed",
       "number": "Number",
@@ -23,6 +23,7 @@
     }
   },
   "feedback": {
-    "noRestrictions": "There are no available restrictions for this country"
+    "noRestrictions": "There are no available restrictions for this country",
+    "noData": "You have nothing stored"
   }
 }
