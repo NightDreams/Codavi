@@ -55,6 +55,7 @@ const ItemsNav = styled.div`
 const ButtonMenu = styled.button`
   position: fixed;
   display: flex;
+  z-index: 1;
   right: 24px;
   bottom: 26px;
   padding: 15px;
