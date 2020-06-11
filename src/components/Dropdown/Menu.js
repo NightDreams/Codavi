@@ -36,7 +36,7 @@ const Dropdown = styled.div`
           box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
           overflow: scroll;
           transition: height var(--speed) ease;
-          z-index: 1;
+          z-index: 2;
           padding: 10px 5px;
         `}
 `;

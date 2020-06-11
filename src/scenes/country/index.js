@@ -164,29 +164,18 @@ export const CountryDetails = ({
 
   const query = `query get($code: String!) {
       getCountry(code: $code) {
-        _id
         code
-        lat
-        lng
         bedsTotal
-        bedsAverage
-        populationAverage
         estimatedBedsTotal
-        estimatedBedsAverage
         typebed{
           type
-          total
           percentage
           population
           estimatedForPopulation
-          source
-          sourceUrl
-          year
         }
         restrictions{
           dateStart
           description
-          keywords
         }
       }
     }`;
@@ -210,14 +199,8 @@ export const CountryDetails = ({
     document.addEventListener("scroll", onScroll);
   });
 
-  const data = [
-    ["Task", "Hours per Day"],
-    ["Work", 11],
-    ["Eat", 2],
-    ["Commute", 2],
-    ["Watch TV", 2],
-    ["Sleep", 7], // CSS-style declaration
-  ];
+  const dataChart = [["Task", "Hours per Day"]];
+
   const options = {
     pieHole: 0.4,
     is3D: false,
@@ -249,12 +232,19 @@ export const CountryDetails = ({
 
   return (
     <Fragment>
-      {/* {console.log(dataCountry)} */}
       {Object.entries(dataCountry).length === 0 ? (
         <SkeletonCountryDetails />
       ) : (
         <Fragment>
           {renderHeader()}
+          {/* Get type and percentage for each typebed */}
+          {dataCountry.typebed.map(({ type, percentage }) => {
+            const setData = [
+              type,
+              parseInt(new Intl.NumberFormat().format(Math.round(percentage))),
+            ];
+            dataChart.push(setData);
+          })}
           {showFixed && renderHeader("fixed", "btnRight")}
           <Separation />
           <Div>
@@ -288,21 +278,23 @@ export const CountryDetails = ({
                   <Data>
                     <Rows>
                       <Filtros>{t("countryDetails.dataTable.type")}</Filtros>
-                      {dataCountry.typebed.map(({ type }) => (
+                      {dataCountry.typebed.map(({ type }, i) => (
                         <>
-                          <li key={type}>{type}</li>
+                          <li key={i}>{type}</li>
                         </>
                       ))}
                     </Rows>
                     <Rows>
                       <Filtros>{t("countryDetails.dataTable.number")}</Filtros>
-                      {dataCountry.typebed.map(({ population }) => (
-                        <li key={population}>
-                          {new Intl.NumberFormat().format(
-                            Math.round(population)
-                          )}
-                        </li>
-                      ))}
+                      {dataCountry.typebed.map(
+                        ({ estimatedForPopulation }, i) => (
+                          <li key={i}>
+                            {new Intl.NumberFormat().format(
+                              Math.round(estimatedForPopulation)
+                            )}
+                          </li>
+                        )
+                      )}
                     </Rows>
                   </Data>
                   <Leyenda>* {t("countryDetails.dataTable.legend")}</Leyenda>
@@ -312,7 +304,7 @@ export const CountryDetails = ({
                   chartType="PieChart"
                   width="100%"
                   height="300px"
-                  data={data}
+                  data={dataChart}
                   options={options}
                 />
               )}
