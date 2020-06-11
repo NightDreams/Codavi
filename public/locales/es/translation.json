@@ -19,7 +19,7 @@
     "dataTable": {
       "type": "Tipo de cama",
       "number": "Numero",
-      "legend": "Datos con una escala de 1,000"
+      "legend": "Datos a una escala de la población total"
     }
   },
   "feedback": {

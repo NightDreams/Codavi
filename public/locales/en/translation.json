@@ -19,7 +19,7 @@
     "dataTable": {
       "type": "Type of bed",
       "number": "Number",
-      "legend": "Data on a scale of 1,000"
+      "legend": "Data at a scale of the total population"
     }
   },
   "feedback": {
