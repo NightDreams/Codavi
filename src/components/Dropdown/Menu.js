@@ -1,26 +1,76 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { connect } from "react-redux";
+import * as listCountriesActions from "../../actions/listCountriesActions";
+
+import styled, { css } from "styled-components";
 import { CSSTransition } from "react-transition-group";
-import { ReactComponent as ArrowLeftIcon } from "../../icons/arrow-left.svg";
-import ReactCountryFlag from "react-country-flag";
+import { MenuSecondary } from "./MenuSecundary";
 
-// Mock
-import { countryAmerica } from "../../api";
+// Translation
+import { useTranslation } from "react-i18next";
 
-export const Menu = ({ children }) => {
+const Title = styled.h4`
+  text-align: left;
+  font-weight: 500;
+  padding-left: 21px;
+  color: #50c7d2;
+  margin: 0 0 4px 0;
+  font-size: 15px;
+`;
+
+const Dropdown = styled.div`
+  ${(props) =>
+    props.isMobile
+      ? css`
+          padding: 10px 5px;
+        `
+      : css`
+          position: absolute;
+          top: 62px;
+          right: 60px;
+          width: 250px;
+          max-height: 310px;
+          background-color: #fff;
+          border-radius: var(--border-radius);
+          box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+          overflow: scroll;
+          transition: height var(--speed) ease;
+          z-index: 2;
+          padding: 10px 5px;
+        `}
+`;
+
+const Menu = ({
+  children,
+  getAmericaCountries,
+  listAmerica,
+  getAfricaCountries,
+  listAfrica,
+  getAsiaCountries,
+  listAsia,
+  getEuropeCountries,
+  listEurope,
+  getOceaniaCountries,
+  listOceania,
+  mobile,
+}) => {
+  const { t } = useTranslation();
   const [activeMenu, setActiveMenu] = useState("main");
-  const [menuHeight, setMenuHeight] = useState(null);
-  const dropdownRef = useRef(null);
 
-  useEffect(() => {
-    setMenuHeight(dropdownRef.current?.firstChild.offsetHeight);
-  }, []);
+  const renderCountriesAmerica = () =>
+    !listAmerica.length && getAmericaCountries();
 
-  function calcHeight(el) {
-    const height = el.offsetHeight;
-    setMenuHeight(height);
-  }
+  const renderCountriesAfrica = () =>
+    !listAfrica.length && getAfricaCountries();
+
+  const renderCountriesAsia = () => !listAsia.length && getAsiaCountries();
+
+  const renderCountriesEurope = () =>
+    !listEurope.length && getEuropeCountries();
+
+  const renderCountriesOceania = () =>
+    !listOceania.length && getOceaniaCountries();
 
   const DropdownItem = ({ goToMenu, leftIcon, children }) => {
     return (
@@ -34,92 +84,79 @@ export const Menu = ({ children }) => {
     );
   };
 
-  const addRecent = (key, name, code) => {
-    const recentCountry = JSON.parse(localStorage.getItem("recent")) || [];
-
-    // Validación para no agregar un pais repetido a recientes
-    const keysArray = [];
-    recentCountry.map((c) => keysArray.push(c.key));
-    if (keysArray.includes(key)) {
-      return false;
-    }
-
-    // Eliminar el ultimo item y agregar uno nuevo con un max de 3 items
-    recentCountry.length > 2 && recentCountry.pop();
-    const countryData = { key, name, code };
-    localStorage.setItem(
-      "recent",
-      JSON.stringify([countryData, ...recentCountry])
-    );
-  };
-
   return (
-    <div className="dropdown" style={{ height: menuHeight }} ref={dropdownRef}>
+    <Dropdown isMobile={mobile}>
       <CSSTransition
         in={activeMenu === "main"}
         timeout={500}
         classNames="menu-primary"
         unmountOnExit
-        onEnter={calcHeight}
       >
         <div className="menu">
           {children}
-          <DropdownItem goToMenu="america">America</DropdownItem>
-          <DropdownItem goToMenu="animals">Africa</DropdownItem>
-          <DropdownItem goToMenu="animals">Asia</DropdownItem>
-          <DropdownItem goToMenu="animals">Europa</DropdownItem>
-          <DropdownItem goToMenu="animals">Oceania</DropdownItem>
+          <Title>{t("global.continents")}</Title>
+          <span onClick={renderCountriesAmerica}>
+            <DropdownItem goToMenu="america">America</DropdownItem>
+          </span>
+          <span onClick={renderCountriesAfrica}>
+            <DropdownItem goToMenu="africa">Africa</DropdownItem>
+          </span>
+          <span onClick={renderCountriesAsia}>
+            <DropdownItem goToMenu="asia">Asia</DropdownItem>
+          </span>
+          <span onClick={renderCountriesEurope}>
+            <DropdownItem goToMenu="europe">Europa</DropdownItem>
+          </span>
+          <span onClick={renderCountriesOceania}>
+            <DropdownItem goToMenu="oceania">Oceania</DropdownItem>
+          </span>
         </div>
       </CSSTransition>
 
-      <CSSTransition
-        in={activeMenu === "america"}
-        timeout={500}
-        classNames="menu-secondary"
-        unmountOnExit
-        onEnter={calcHeight}
-      >
-        <div className="menu">
-          <DropdownItem goToMenu="main" leftIcon={<ArrowLeftIcon />}>
-            <p style={{ fontWeight: "600" }}>Continentes</p>
-          </DropdownItem>
-          {countryAmerica.map(({ key, name, code }) => (
-            <Link
-              key={key}
-              to={`/country/${code}`}
-              onClick={() => addRecent(key, name, code)}
-            >
-              <DropdownItem>
-                {" "}
-                <ReactCountryFlag
-                  countryCode={code}
-                  svg
-                  style={{ marginRight: "7px", borderRadius: "20px" }}
-                />{" "}
-                {name}
-              </DropdownItem>
-            </Link>
-          ))}
-        </div>
-      </CSSTransition>
+      <MenuSecondary
+        countryActiveMenu="america"
+        activeMenu={activeMenu}
+        setActiveMenu={setActiveMenu}
+        listCountriesContinent={listAmerica}
+      />
 
-      <CSSTransition
-        in={activeMenu === "animals"}
-        timeout={500}
-        classNames="menu-secondary"
-        unmountOnExit
-        onEnter={calcHeight}
-      >
-        <div className="menu">
-          <DropdownItem goToMenu="main" leftIcon={<ArrowLeftIcon />}>
-            <p style={{ fontWeight: "600" }}>Continentes</p>
-          </DropdownItem>
-          <DropdownItem>Kangaroo</DropdownItem>
-          <DropdownItem>Frog</DropdownItem>
-          <DropdownItem>Horse?</DropdownItem>
-          <DropdownItem>Hedgehog</DropdownItem>
-        </div>
-      </CSSTransition>
-    </div>
+      <MenuSecondary
+        countryActiveMenu="africa"
+        activeMenu={activeMenu}
+        setActiveMenu={setActiveMenu}
+        listCountriesContinent={listAfrica}
+      />
+
+      <MenuSecondary
+        countryActiveMenu="asia"
+        activeMenu={activeMenu}
+        setActiveMenu={setActiveMenu}
+        listCountriesContinent={listAsia}
+      />
+
+      <MenuSecondary
+        countryActiveMenu="europe"
+        activeMenu={activeMenu}
+        setActiveMenu={setActiveMenu}
+        listCountriesContinent={listEurope}
+      />
+
+      <MenuSecondary
+        countryActiveMenu="oceania"
+        activeMenu={activeMenu}
+        setActiveMenu={setActiveMenu}
+        listCountriesContinent={listOceania}
+      />
+    </Dropdown>
   );
 };
+
+const mapStateToProps = (reducers) => {
+  return reducers.listCountriesReducer;
+};
+
+const mapDispatchToProps = {
+  ...listCountriesActions,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Menu);

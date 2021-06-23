@@ -2,7 +2,7 @@
 import React, { Fragment } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { GlobalStyles, Container } from "../styles";
-import { Home } from "../scenes/home";
+import Home from "../scenes/home";
 import Header from "../components/Header";
 import { CountryDetails } from "../scenes/country";
 import { Saved } from "../scenes/saved";

@@ -3,8 +3,9 @@ import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { DropdownItem } from "../Dropdown/DropdownItem";
-import ReactCountryFlag from "react-country-flag";
-import { ReactComponent as TimesIcon } from "../../icons/times.svg";
+
+// Translation
+import { useTranslation } from "react-i18next";
 
 const Title = styled.h4`
   text-align: left;
@@ -21,24 +22,17 @@ const Separation = styled.hr`
 `;
 
 export const Recent = () => {
+  const { t } = useTranslation();
   const recentCountry = JSON.parse(localStorage.getItem("recent")) || [];
 
   return (
     <Fragment>
       {recentCountry.length > 0 && (
         <Fragment>
-          <Title>Recientes</Title>
+          <Title>{t("global.recent")}</Title>
           {recentCountry.map(({ key, name, code }) => (
             <Link key={key} to={`/country/${code}`}>
-              <DropdownItem>
-                {" "}
-                <ReactCountryFlag
-                  countryCode={code}
-                  svg
-                  style={{ marginRight: "7px", borderRadius: "20px" }}
-                />{" "}
-                {name}
-              </DropdownItem>
+              <DropdownItem>{name}</DropdownItem>
             </Link>
           ))}
           <Separation />

@@ -1,0 +1,29 @@
+{
+  "global": {
+    "about": "Find out about the type and total number of beds available worldwide for the COVID-19",
+    "beds": "Beds",
+    "bedsAviable": "Countries with more beds available",
+    "bedsFewer": "Countries with fewer beds available",
+    "saved": "Saved",
+    "mySaved": "My saved",
+    "filters": "Filters",
+    "recent": "Recent",
+    "continents": "Continents"
+  },
+  "countryDetails": {
+    "title": "Beds and restrictions",
+    "aviableBeds": "Available beds",
+    "restrictions": "Restrictions",
+    "view": "View",
+    "descTotalBeds": "beds available throughout the country",
+    "dataTable": {
+      "type": "Type of bed",
+      "number": "Number",
+      "legend": "Data at a scale of the total population"
+    }
+  },
+  "feedback": {
+    "noRestrictions": "There are no available restrictions for this country",
+    "noData": "You have nothing stored"
+  }
+}

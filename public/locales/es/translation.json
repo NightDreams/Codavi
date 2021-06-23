@@ -1,0 +1,29 @@
+{
+  "global": {
+    "about": " Informate sobre el tipo y total de camas disponibles en el mundo para el COVID-19",
+    "beds": "Camas",
+    "bedsAviable": "Países con mas camas disponibles",
+    "bedsFewer": "Países con menos camas disponibles",
+    "saved": "Guardado",
+    "mySaved": "Mis guardados",
+    "filters": "Filtros",
+    "recent": "Recientes",
+    "continents": "Continentes"
+  },
+  "countryDetails": {
+    "title": "Camas y restricciones",
+    "aviableBeds": "Camas disponibles",
+    "restrictions": "Restricciones",
+    "view": "Vista",
+    "descTotalBeds": "camas disponibls en todo el país",
+    "dataTable": {
+      "type": "Tipo de cama",
+      "number": "Numero",
+      "legend": "Datos a una escala de la población total"
+    }
+  },
+  "feedback": {
+    "noRestrictions": "No hay restricciones displonibles para este país",
+    "noData": "No tienes nada guardado"
+  }
+}

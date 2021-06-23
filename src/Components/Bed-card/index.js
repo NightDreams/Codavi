@@ -1,40 +1,70 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable prefer-const */
+/* eslint-disable no-extend-native */
+/* eslint-disable react/jsx-key */
 import React from "react";
-import { Card, Grid, Rows, Name, Data, Total, Flag, Menu, General, Icono,Pais, Filtros} from "./styles";
-import More from "../../icons/more-vertical.svg";
-export const BedCard = () => {
+import { Link } from "react-router-dom";
+import styled from "styled-components";
+import { Card, Grid, Name, Total, Menu, General, Icon, Pais } from "./styles";
+import ReactCountryFlag from "react-country-flag";
+import { useCountryFlag } from "../../utils/hooks/useCountryFlag";
+
+import { Saved } from "./Saved";
+
+// Translation
+import { useTranslation } from "react-i18next";
+
+const CountryFlag = styled(ReactCountryFlag)`
+  width: 2em !important;
+  height: 2em !important;
+  margin-right: 7px;
+  border-radius: 50px;
+  margin-top: 7px;
+`;
+
+export const BedCard = ({
+  code,
+  saved,
+  _bedsTotal,
+  removeItem,
+  estimatedBedsTotal,
+}) => {
+  const { t } = useTranslation();
+  const countryName = useCountryFlag(code);
+
   return (
     <Grid>
-    <Card>
-      <Menu>
-        <Pais>
-          <Flag></Flag>
-          <General>
-            <Name>Pais</Name>
-            <Total>110 camas</Total>
-          </General>
-        </Pais>
-        <Icono>
-          <img src={More} alt="Options" />
-        </Icono>
-      </Menu>
-      <Data>
-        <Rows>
-          <Filtros>Tipo de cama</Filtros>
-          <li>Acute</li>
-          <li>Icu</li>
-          <li>Otras</li>
-          <li>Psychiatric</li>
-        </Rows>
-        <Rows>
-          <Filtros>Tipo de cama</Filtros>
-          <li>6000</li>
-          <li>500</li>
-          <li>909</li>
-          <li>674</li>
-        </Rows>
-      </Data>
-    </Card>
+      <Card>
+        <Menu>
+          <Pais>
+            <Link to={`/country/${code}`}>
+              <CountryFlag countryCode={code} svg />
+            </Link>
+            <General>
+              <Link to={`/country/${code}`}>
+                <Name>{countryName}</Name>
+              </Link>
+              <Total>
+                {_bedsTotal
+                  ? new Intl.NumberFormat().format(Math.round(_bedsTotal))
+                  : new Intl.NumberFormat().format(
+                      Math.round(estimatedBedsTotal)
+                    )}{" "}
+                {t("global.beds")}
+              </Total>
+            </General>
+          </Pais>
+          <Icon>
+            <Saved
+              code={code}
+              saved={saved}
+              _bedsTotal={_bedsTotal}
+              removeItem={removeItem}
+              estimatedBedsTotal={estimatedBedsTotal}
+            />
+          </Icon>
+        </Menu>
+      </Card>
     </Grid>
-
   );
 };
